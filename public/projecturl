@@ -1,0 +1,619 @@
+https://kskzcptqhnhfljqayzun.supabase.co
+
+"Nigeria", "Kenya", "Uganda", "South Africa", "Ghana", "Tanzania", "Ethiopia", "Rwanda", "Egypt",
+  "Cameroon", "Algeria", "Morocco", "Tunisia", "Senegal", "Zambia", "Zimbabwe", "Botswana", "Namibia",
+  "Angola", "Mozambique", "Sudan", "Mali", "Niger", "Chad", "Benin", "Togo", "Côte d'Ivoire", "Burundi",
+  "Democratic Republic of Congo", "Republic of Congo", "Gambia", "Lesotho", "Liberia", "Malawi", "Mauritania",
+  "Mauritius", "Seychelles", "Sierra Leone", "Somalia", "South Sudan", "Swaziland", "Equatorial Guinea", "Gabon"
+
+
+
+  {menuOpenJobId === job.id && (
+                      <div className="absolute right-0 -top-24 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg w-36 z-20">
+                        <Link
+                          to={`/edit-job/${job.id}`}
+                          className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-sm text-gray-800 dark:text-white"
+                        >
+                          <FaEdit className="mr-2" /> Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(job.id)}
+                          className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-sm text-red-600 dark:text-red-400"
+                        >
+                          <FaTrash className="mr-2" /> Delete
+                        </button>
+                      </div>
+                    )}
+
+
+                    //this navbar fully functioning
+                    import React, { useState, useEffect, useRef } from 'react';
+                    import { Link, useLocation, useNavigate } from 'react-router-dom';
+                    import { FaBars, FaTimes, FaSearch, FaMoon, FaSun, FaUserCircle } from 'react-icons/fa';
+                    import logo from '../assets/internsavvy.png';
+                    import AuthModal from './AuthModal';
+                    import { UserAuth } from '../Context/AuthContext';
+                    import { supabase } from '../supabaseClient';
+                    
+                    const Navbar = () => {
+                      const [authType, setAuthType] = useState(null);
+                      const [menuOpen, setMenuOpen] = useState(false);
+                      const [dropdownOpen, setDropdownOpen] = useState(false);
+                      const [darkMode, setDarkMode] = useState(false);
+                      const [role, setRole] = useState(null);
+                    
+                      const { session, signOutUser } = UserAuth();
+                      const navigate = useNavigate();
+                      const location = useLocation();
+                      const menuRef = useRef();
+                      const overlayRef = useRef();
+                    
+                      const toggleTheme = () => {
+                        setDarkMode((prev) => !prev);
+                        document.documentElement.classList.toggle('dark');
+                      };
+                    
+                      const closeMenu = () => setMenuOpen(false);
+                    
+                      // 🟢 Fetch user role from profiles
+                      useEffect(() => {
+                        const fetchRole = async () => {
+                          if (session?.user?.id) {
+                            const { data, error } = await supabase
+                              .from('profiles')
+                              .select('role')
+                              .eq('id', session.user.id)
+                              .single();
+                            if (!error && data?.role) {
+                              setRole(data.role);
+                            }
+                          }
+                        };
+                        fetchRole();
+                      }, [session]);
+                    
+                      useEffect(() => {
+                        const handleClickOutside = (e) => {
+                          if (
+                            menuRef.current &&
+                            !menuRef.current.contains(e.target) &&
+                            overlayRef.current &&
+                            overlayRef.current.contains(e.target)
+                          ) {
+                            closeMenu();
+                          }
+                          if (dropdownOpen && !e.target.closest('#userDropdown')) {
+                            setDropdownOpen(false);
+                          }
+                        };
+                        document.addEventListener('mousedown', handleClickOutside);
+                        return () => document.removeEventListener('mousedown', handleClickOutside);
+                      }, [dropdownOpen]);
+                    
+                      const handleLogout = async () => {
+                        await signOutUser();
+                        setDropdownOpen(false);
+                        navigate('/');
+                      };
+                    
+                      const navLinks = [
+                        { name: 'YEE Africa', path: '/' },
+                        { name: 'Internships', path: '/internships' },
+                        { name: 'Jobs', path: '/jobs' },
+                        { name: 'Courses', path: '/courses' },
+                        { name: 'Entrepreneurs', path: '/entrepreneurs' },
+                      ];
+                    
+                      const profilePath = role ? `/${role}-profile` : '/';
+                    
+                      return (
+                        <header className="bg-white dark:bg-gray-900 shadow-md fixed top-0 w-full z-50">
+                          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                            {/* Logo & Navigation */}
+                            <div className="flex items-center gap-4">
+                              <img src={logo} alt="Logo" className="h-10 w-10 object-contain bg-white rounded-full" />
+                              <nav className="hidden lg:flex gap-6 items-center text-gray-800 dark:text-white">
+                                {navLinks.map((link) => (
+                                  <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    className={`hover:text-blue-500 transition ${
+                                      location.pathname === link.path ? 'text-yellow-400' : ''
+                                    }`}
+                                  >
+                                    {link.name}
+                                  </Link>
+                                ))}
+                              </nav>
+                            </div>
+                    
+                            {/* Search */}
+                            <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full w-60 md:w-80">
+                              <FaSearch className="text-gray-500 dark:text-gray-300" />
+                              <input
+                                type="text"
+                                placeholder="Search..."
+                                className="bg-transparent outline-none w-full px-2 text-sm text-gray-700 dark:text-white"
+                              />
+                            </div>
+                    
+                            {/* Right Side */}
+                            <div className="hidden lg:flex items-center gap-4 text-gray-800 dark:text-white">
+                              <Link
+                                to={session && role === 'employer' ? '/employer-dashboard' : '/employers'}
+                                className="hover:text-blue-500 transition"
+                              >
+                                Employers
+                              </Link>
+                              <button onClick={toggleTheme} className="text-xl ml-2">{darkMode ? <FaSun /> : <FaMoon />}</button>
+                    
+                              {session ? (
+                                <div className="relative" id="userDropdown">
+                                  <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2 hover:text-blue-500">
+                                    <FaUserCircle className="text-xl" />
+                                  </button>
+                                  {dropdownOpen && (
+                                    <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow rounded w-48 py-2 z-50">
+                                      <Link to={profilePath} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">My Profile</Link>
+                                      <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</Link>
+                                      <button
+                                        onClick={handleLogout}
+                                        className="w-full text-left px-4 py-2 hover:bg-red-100 dark:hover:bg-red-700 text-red-500"
+                                      >
+                                        Logout
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <>
+                                  <button onClick={() => setAuthType('login')} className="px-4 py-1 border rounded-full border-blue-600 hover:bg-blue-600 hover:text-white transition">Login</button>
+                                  <button onClick={() => setAuthType('register')} className="px-4 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Register</button>
+                                </>
+                              )}
+                            </div>
+                    
+                            {/* Mobile Menu Icon */}
+                            <div className="lg:hidden flex items-center gap-4">
+                              <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
+                              <button onClick={() => setMenuOpen(true)}><FaBars /></button>
+                            </div>
+                          </div>
+                    
+                          {/* Mobile Menu */}
+                          {menuOpen && (
+                            <div ref={overlayRef} className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40">
+                              <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-white dark:bg-gray-900 p-6 z-50 flex flex-col">
+                                <div className="flex justify-end mb-6">
+                                  <button onClick={closeMenu}><FaTimes size={24} /></button>
+                                </div>
+                    
+                                <nav className="flex flex-col gap-4 text-gray-800 dark:text-white">
+                                  {navLinks.map((link) => (
+                                    <Link
+                                      key={link.name}
+                                      to={link.path}
+                                      onClick={closeMenu}
+                                      className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    >
+                                      {link.name}
+                                    </Link>
+                                  ))}
+                    
+                                  <Link
+                                    to={session && role === 'employer' ? '/employer-dashboard' : '/employers'}
+                                    onClick={closeMenu}
+                                    className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                                  >
+                                    Employers
+                                  </Link>
+                    
+                                  {!session ? (
+                                    <>
+                                      <button
+                                        onClick={() => {
+                                          closeMenu();
+                                          setAuthType("login");
+                                        }}
+                                        className="w-full text-left px-4 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-800"
+                                      >
+                                        Login
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          closeMenu();
+                                          setAuthType("register");
+                                        }}
+                                        className="w-full text-left px-4 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-800"
+                                      >
+                                        Register
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Link
+                                        to={profilePath}
+                                        onClick={closeMenu}
+                                        className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                                      >
+                                        My Account
+                                      </Link>
+                                      <button
+                                        onClick={() => {
+                                          closeMenu();
+                                          handleLogout();
+                                        }}
+                                        className="w-full text-left px-4 py-2 rounded text-red-500 hover:bg-red-100 dark:hover:bg-red-700"
+                                      >
+                                        Logout
+                                      </button>
+                                    </>
+                                  )}
+                                </nav>
+                              </div>
+                            </div>
+                          )}
+                    
+                          {/* Auth Modal */}
+                          {authType && (
+                            <AuthModal
+                              authType={authType}
+                              onClose={() => setAuthType(null)}
+                              switchAuth={(type) => setAuthType(type)}
+                            />
+                          )}
+                        </header>
+                      );
+                    };
+                    
+                    export default Navbar;
+
+                    //post jobs
+                    import React, { useState, useEffect } from 'react';
+                    import { useNavigate, useParams } from 'react-router-dom';
+                    import { supabase } from '../supabaseClient';
+                    import placeholderImage from '../assets/job.svg';
+                    
+                    const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Remote'];
+                    const industries = [
+                      'Information Technology', 'Finance', 'Healthcare', 'Education', 'Engineering',
+                      'Marketing', 'Hospitality', 'Construction', 'Agriculture', 'Other'
+                    ];
+                    
+                    export default function JobForm() {
+                      const { jobId } = useParams();
+                      const navigate = useNavigate();
+                    
+                      const [userId, setUserId] = useState(null);
+                      const [loading, setLoading] = useState(false);
+                    
+                      // Form fields
+                      const [title, setTitle] = useState('');
+                      const [type, setType] = useState('');
+                      const [industry, setIndustry] = useState('');
+                      const [location, setLocation] = useState('');
+                      const [isRemote, setIsRemote] = useState(false);
+                      const [deadline, setDeadline] = useState('');
+                      const [description, setDescription] = useState('');
+                      const [requirements, setRequirements] = useState('');
+                      const [salary, setSalary] = useState('');
+                      const [imageFile, setImageFile] = useState(null);
+                      const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+                      const [existingImageUrl, setExistingImageUrl] = useState(null);
+                    
+                      // Auth
+                      useEffect(() => {
+                        supabase.auth.getUser().then(({ data: { user } }) => {
+                          if (!user) return navigate('/signin');
+                          setUserId(user.id);
+                        });
+                      }, [navigate]);
+                    
+                      // Load job if in edit mode
+                      useEffect(() => {
+                        if (!jobId) return;
+                        const fetchJob = async () => {
+                          const { data, error } = await supabase
+                            .from('jobs')
+                            .select('*')
+                            .eq('id', jobId)
+                            .single();
+                    
+                          if (error) {
+                            console.error(error);
+                            return;
+                          }
+                    
+                          setTitle(data.title);
+                          setType(data.type);
+                          setIndustry(data.industry);
+                          setLocation(data.location);
+                          setIsRemote(data.is_remote);
+                          setDeadline(data.application_deadline || '');
+                          setDescription(data.description);
+                          setRequirements(data.requirements);
+                          setSalary(data.salary);
+                          setExistingImageUrl(data.image_url);
+                          setImagePreviewUrl(data.image_url || null);
+                        };
+                    
+                        fetchJob();
+                      }, [jobId]);
+                    
+                      const handleImageChange = (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        setImageFile(file);
+                    
+                        const reader = new FileReader();
+                        reader.onloadend = () => setImagePreviewUrl(reader.result);
+                        reader.readAsDataURL(file);
+                      };
+                    
+                      const handleSubmit = async (e) => {
+                        e.preventDefault();
+                        setLoading(true);
+                    
+                        try {
+                          let imageUrl = existingImageUrl;
+                    
+                          if (imageFile) {
+                            const ext = imageFile.name.split('.').pop();
+                            const filename = `job-${userId}-${Date.now()}.${ext}`;
+                            const path = `job-images/${filename}`;
+                    
+                            const { error: uploadError } = await supabase.storage
+                              .from('job-images')
+                              .upload(path, imageFile, { upsert: false });
+                    
+                            if (uploadError) throw uploadError;
+                    
+                            const { data: urlData } = supabase
+                              .storage
+                              .from('job-images')
+                              .getPublicUrl(path);
+                    
+                            imageUrl = urlData.publicUrl;
+                          }
+                    
+                          const jobData = {
+                            title,
+                            type,
+                            industry,
+                            location,
+                            is_remote: isRemote,
+                            application_deadline: deadline,
+                            description,
+                            requirements,
+                            salary,
+                            image_url: imageUrl,
+                            employer_id: userId,
+                          };
+                    
+                          if (jobId) {
+                            // Edit mode
+                            const { error } = await supabase
+                              .from('jobs')
+                              .update(jobData)
+                              .eq('id', jobId);
+                            if (error) throw error;
+                          } else {
+                            // Create mode
+                            const { error } = await supabase.from('jobs').insert(jobData);
+                            if (error) throw error;
+                          }
+                    
+                          navigate('/employer-dashboard');
+                        } catch (err) {
+                          alert('Error submitting job: ' + err.message);
+                        } finally {
+                          setLoading(false);
+                        }
+                      };
+                    
+                      return (
+                        <div className="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
+                          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
+                            {jobId ? 'Edit Job' : 'Post a Job'}
+                          </h2>
+                    
+                          <form onSubmit={handleSubmit} className="space-y-4">
+                    
+                            {/* Image Upload */}
+                            <div className="flex flex-col items-center">
+                              <img
+                                src={imagePreviewUrl || placeholderImage}
+                                alt="Job Preview"
+                                className="w-48 h-32 object-cover border rounded"
+                              />
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="mt-2"
+                              />
+                            </div>
+                    
+                            <input
+                              type="text"
+                              placeholder="Job Title"
+                              value={title}
+                              onChange={e => setTitle(e.target.value)}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <select
+                              value={type}
+                              onChange={e => setType(e.target.value)}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            >
+                              <option value="">Select Job Type</option>
+                              {jobTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                            </select>
+                    
+                            <select
+                              value={industry}
+                              onChange={e => setIndustry(e.target.value)}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            >
+                              <option value="">Select Industry</option>
+                              {industries.map(i => <option key={i} value={i}>{i}</option>)}
+                            </select>
+                    
+                            <input
+                              type="text"
+                              placeholder="Location"
+                              value={location}
+                              onChange={e => setLocation(e.target.value)}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={isRemote}
+                                onChange={() => setIsRemote(!isRemote)}
+                              />
+                              <label className="dark:text-white">Remote job?</label>
+                            </div>
+                    
+                            <input
+                              type="date"
+                              value={deadline}
+                              onChange={e => setDeadline(e.target.value)}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <textarea
+                              placeholder="Job Description"
+                              value={description}
+                              onChange={e => setDescription(e.target.value)}
+                              rows={4}
+                              required
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <textarea
+                              placeholder="Requirements"
+                              value={requirements}
+                              onChange={e => setRequirements(e.target.value)}
+                              rows={3}
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <input
+                              type="text"
+                              placeholder="Salary (optional)"
+                              value={salary}
+                              onChange={e => setSalary(e.target.value)}
+                              className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+                            />
+                    
+                            <button
+                              type="submit"
+                              disabled={loading}
+                              className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                            >
+                              {loading ? (jobId ? 'Updating...' : 'Posting...') : jobId ? 'Update Job' : 'Post Job'}
+                            </button>
+                          </form>
+                        </div>
+                      );
+                    }
+                    
+
+                    //home.jsx with cards
+                    import React, { useEffect, useState } from "react";
+                    import { supabase } from "../supabaseClient";
+                    import { Link } from "react-router-dom";
+                    import defaultLogo from "../assets/job.svg"; // fallback logo
+                    
+                    export default function Home() {
+                      const [jobs, setJobs] = useState([]);
+                    
+                      useEffect(() => {
+                        const fetchJobs = async () => {
+                          const { data, error } = await supabase
+                            .from("jobs")
+                            .select("id, title, location, type, image_url, created_at, employer_id, employers(company_name)")
+                            .order("created_at", { ascending: false })
+                            .limit(6);
+                    
+                          if (error) {
+                            console.error("Failed to fetch jobs:", error);
+                          } else {
+                            setJobs(data || []);
+                          }
+                        };
+                    
+                        fetchJobs();
+                      }, []);
+                    
+                      return (
+                        <div className="p-6 max-w-7xl mx-auto">
+                          <section className="text-center mb-10">
+                            <h1 className="text-4xl font-semibold mb-4">Find Your Next Internship or Job</h1>
+                            <p className="text-gray-500 mb-6">Explore hundreds of opportunities to kickstart your career.</p>
+                            <input
+                              type="text"
+                              placeholder="Search by role or company"
+                              className="p-3 w-2/3 max-w-md border rounded-md shadow-md"
+                            />
+                          </section>
+                    
+                          <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {jobs.length === 0 ? (
+                              <p className="text-gray-500">No jobs available right now.</p>
+                            ) : (
+                              jobs.map((job) => (
+                                <div
+                                  key={job.id}
+                                  className="border rounded-lg shadow-md p-4 flex flex-col justify-between bg-white dark:bg-gray-800"
+                                >
+                                  {/* Top Row: Logo & Job Type */}
+                                  <div className="flex justify-between items-center mb-4">
+                                    <img
+                                      src={job.image_url || defaultLogo}
+                                      alt="Company Logo"
+                                      className="w-12 h-12 object-cover rounded-full"
+                                    />
+                                    <span className="px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded">
+                                      {job.type || "Job Type"}
+                                    </span>
+                                  </div>
+                    
+                                  {/* Job Title */}
+                                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+                                    {job.title}
+                                  </h3>
+                    
+                                  {/* Company & Location */}
+                                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    <span>{job.employers?.company_name || "Company"}</span>
+                                    <span>{job.location || "Location"}</span>
+                                  </div>
+                    
+                                  {/* Bottom Row: View Details */}
+                                  <div className="flex justify-between items-center">
+                                    <Link
+                                      to={`/job/${job.id}`}
+                                      className="text-blue-600 hover:underline text-sm font-medium"
+                                    >
+                                      View Details
+                                    </Link>
+                                    <span className="text-red-500 text-lg">♡</span>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </section>
+                        </div>
+                      );
+                    }
+                    
+                    
