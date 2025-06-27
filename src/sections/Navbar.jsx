@@ -3,11 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FaBars, FaTimes, FaSearch, FaMoon, FaSun, FaUserCircle
 } from 'react-icons/fa';
-import logo from '../assets/internsavvy.png';
+import logo from '../assets/Internsavvy.png';
 import AuthModal from './AuthModal';
 import { UserAuth } from '../Context/AuthContext';
 import { supabase } from '../supabaseClient';
 
+git add src/sections/Navbar.jsx
+git commit -m "Fix: corrected logo filename case mismatch"
+git push
 const Navbar = () => {
   const [authType, setAuthType] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
