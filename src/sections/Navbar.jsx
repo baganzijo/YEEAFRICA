@@ -8,9 +8,7 @@ import AuthModal from './AuthModal';
 import { UserAuth } from '../Context/AuthContext';
 import { supabase } from '../supabaseClient';
 
-git add src/sections/Navbar.jsx
-git commit -m "Fix: corrected logo filename case mismatch"
-git push
+
 const Navbar = () => {
   const [authType, setAuthType] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
