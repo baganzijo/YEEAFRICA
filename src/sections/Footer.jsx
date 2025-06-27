@@ -6,7 +6,7 @@ import {
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa";
-import logo from "../assets/internsavvy.png"; // same logo as navbar
+import logo from "../assets/Internsavvy.png"; // same logo as navbar
 
 const Footer = () => {
   return (
