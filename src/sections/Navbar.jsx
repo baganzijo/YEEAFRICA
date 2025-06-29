@@ -104,12 +104,12 @@ const Navbar = () => {
   const profilePath = role ? `/${role}-profile` : '/';
 
   return (
-    <header className="bg-blue-900 dark:bg-gray-950 shadow-md fixed top-0 w-full z-50">
+    <header className="bg-white dark:bg-gray-950 shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo & Nav */}
         <div className="flex items-center gap-4">
           <img src={logo} alt="Logo" className="h-10 w-10 object-contain bg-white rounded-full" />
-          <nav className="hidden lg:flex gap-6 items-center text-white dark:text-white">
+          <nav className="hidden lg:flex gap-6 items-center text-black dark:text-white">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -135,7 +135,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Side Actions */}
-        <div className="hidden lg:flex items-center gap-4 text-white dark:text-white">
+        <div className="hidden lg:flex items-center gap-4 text-black dark:text-white">
           <button onClick={toggleTheme} className="text-xl ml-2">
             {darkMode ? <FaSun /> : <FaMoon />}
           </button>
@@ -181,7 +181,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="lg:hidden flex items-center gap-4  text-white dark:text-white">
+        <div className="lg:hidden flex items-center gap-4  text-black dark:text-white">
           <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
           <button onClick={() => setMenuOpen(true)}><FaBars /></button>
         </div>
@@ -190,7 +190,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div ref={overlayRef} className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40">
-          <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-blue-900 dark:bg-gray-950 p-6 z-50 flex flex-col">
+          <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-gray-950 dark:bg-gray-950 p-6 z-50 flex flex-col">
             <div className="flex justify-end text-white mb-6">
               <button onClick={closeMenu}><FaTimes size={24} /></button>
             </div>
@@ -200,7 +200,7 @@ const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={closeMenu}
-                  className="block px-4 py-2 rounded hover:bg-blue-700 dark:hover:bg-gray-800"
+                  className="block px-4 py-2 rounded hover:bg-gray-800 dark:hover:bg-gray-800"
                 >
                   {link.name}
                 </Link>

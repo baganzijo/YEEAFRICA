@@ -32,7 +32,7 @@ const Introduction = () => {
   };
 
   return (
-    <main className="bg-blue-900 mt-10 dark:bg-gray-950 text-gray-800 dark:text-gray-100 transition-colors">
+    <main className="bg-white mt-10 dark:bg-gray-950 text-gray-950 dark:text-gray-100 transition-colors">
       {/* Auth Modal */}
       {authModalVisible && (
         <AuthModal
@@ -76,7 +76,7 @@ const Introduction = () => {
       
 
       {/* Hero Section */}
-      <section className="min-h-[80vh] flex flex-col-reverse md:flex-row items-center justify-between gap-8 bg-gradient-to-tr from-blue-900 via-blue-500 to-slate-700 dark:bg-gray-950 text-center md:text-left px-6 py-12">
+      <section className="min-h-[80vh] flex flex-col-reverse md:flex-row items-center justify-between gap-8 bg-gradient-to-tr from-blue-950 via-blue-500 to-gray-950 dark:bg-gray-950 text-center md:text-left px-6 py-12">
         <div className="flex-1">
           <h1 className="text-4xl md:text-5xl font-bold text-yellow-400 dark:text-yellow-500 mb-4">
             Welcome our fellow youth!
@@ -102,8 +102,8 @@ const Introduction = () => {
       {/* Features Section */}
       <section className="py-16 dark:bg-gray-950">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-yellow-300 dark:text-yellow-300 mb-12">
-            We are here to help you ;
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-950 dark:text-white mb-12">
+            We are here to help you;
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {cards.map((card, index) => (
@@ -121,7 +121,7 @@ const Introduction = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 bg-gradient-to-tl from-blue-900 via-blue-500  dark:bg-gray-950">
+      <section className="py-16 bg-gray-950 dark:bg-gray-950">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-yellow-300 dark:text-yellow-300 mb-12">
             Only Three steps and you're in
@@ -129,7 +129,7 @@ const Introduction = () => {
           <div className="grid gap-12 md:grid-cols-3">
             {steps.map((step, index) => (
               <div key={index} className="text-center">
-                <img src={step.image} alt={step.title} className="mx-auto mb-4 w-24 h-24 object-cover rounded" />
+                <img src={step.image} alt={step.title} className="mx-auto mb-4 w-40 h-24 object-cover rounded" />
                 <h3 className="text-xl font-semibold mb-2 text-[#f4f5f7] dark:text-white">{step.title}</h3>
                 <p className="text-white dark:text-gray-300">{step.desc}</p>
               </div>
