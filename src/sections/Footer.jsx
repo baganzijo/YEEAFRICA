@@ -10,7 +10,7 @@ import logo from "../assets/Internsavvy.png"; // same logo as navbar
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-950 text-gray-700 dark:text-gray-300 pt-10 pb-6">
+    <footer className="bg-gray-400 dark:bg-gray-900 text-gray-700 dark:text-gray-300 pt-10 pb-6">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Logo & About */}
         <div>

@@ -121,7 +121,7 @@ const Introduction = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 bg-gray-950 dark:bg-gray-950">
+      <section className="py-16 bg-gray-800 dark:bg-gray-950">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-yellow-300 dark:text-yellow-300 mb-12">
             Only Three steps and you're in

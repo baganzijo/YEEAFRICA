@@ -79,7 +79,6 @@ const Navbar = () => {
           { name: 'Home', path: '/home' },
           { name: 'Dashboard', path: '/employer-dashboard' },
           { name: 'Post Job', path: '/post-job' },
-          { name: 'Company Profile', path: '/employer-profile' },
         ]
       : role === 'student'
       ? [
