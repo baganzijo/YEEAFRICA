@@ -8,32 +8,18 @@ import { toast } from "react-hot-toast";
 // ✅ Updated paths to match your real form routes
 const roles = [
   {
-    name: "Student",
+    name: " I'm a Student",
     path: "/student-form",
     emoji: "🎓",
-    description: "Learn new skills and find opportunities.",
+    description: "This section is for scholars and non scholars who are looking for internships and jobs.",
     roleKey: "student",
   },
   {
-    name: "Tutor",
-    path: "/tutor-form",
-    emoji: "🧑‍🏫",
-    description: "Teach, mentor, and earn through knowledge.",
-    roleKey: "tutor",
-  },
-  {
-    name: "Employer",
+    name: " I'm an Employer",
     path: "/employer-form",
     emoji: "💼",
-    description: "Post jobs, find talent, and grow your business.",
+    description: "This section is for employers only who need to find interns and talented employees for their businesses.",
     roleKey: "employer",
-  },
-  {
-    name: "Continue as Guest",
-    path: "/browse",
-    emoji: "👀",
-    description: "Explore and buy without an account.",
-    isGuest: true,
   },
 ];
 
@@ -71,7 +57,6 @@ const ChooseRole = () => {
       if (data.profile_complete && data.role) {
         const redirectMap = {
           student: "/student-profile",
-          tutor: "/tutor-profile",
           employer: "/employer-dashboard",
         };
         navigate(redirectMap[data.role] || "/choose-role");
@@ -91,7 +76,7 @@ const ChooseRole = () => {
     }
 
     setUpdating(true);
-    const toastId = toast.loading("Updating your role...");
+    const toastId = toast.loading("Updating your profile please wait...");
 
     const { error } = await supabase
       .from("profiles")
@@ -100,20 +85,20 @@ const ChooseRole = () => {
     toast.dismiss(toastId);
 
     if (error) {
-      toast.error("Failed to update role.");
+      toast.error("Failed to update profile.");
       console.error("Supabase error:", error.message);
       setUpdating(false);
       return;
     }
 
-    toast.success("Role updated successfully!");
+    toast.success("Profile updated successfully!");
     setUpdating(false);
     navigate(path);
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950">
         <Spinner text="Checking your profile..." />
       </div>
     );
@@ -121,42 +106,38 @@ const ChooseRole = () => {
 
   if (updating) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <Spinner text="Updating your role..." />
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950">
+        <Spinner text="Updating your profile..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4 py-12">
-      <div className="max-w-4xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
-          Choose Your Role
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 px-0 py-0">
+      <div className="max-w-4xl w-full bg-white dark:bg-gray-950 rounded-lg p-8">
+        <h1 className="text-2xl font-bold text-center text-gray-950 dark:text-white mb-6">
+          Choose Your Profile to continue
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
           {roles.map((role) => (
             <div
               key={role.name}
               onClick={() => handleChoose(role.path, role.isGuest, role.roleKey)}
-              className={`cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-600 transition rounded-lg p-6 text-center border dark:border-gray-600 ${
+              className={`cursor-pointer bg-white dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-800 transition rounded-lg p-6 text-center border dark:border-gray-600 ${
                 role.isGuest ? "border-dashed border-2" : ""
               }`}
             >
               <div className="text-4xl mb-2">{role.emoji}</div>
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {role.name}
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+              <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
                 {role.description}
               </p>
             </div>
           ))}
         </div>
-
-        <p className="mt-6 text-xs text-center text-gray-500 dark:text-gray-400">
-          Guests can browse and buy opportunities but need an account to apply or post.
-        </p>
       </div>
     </div>
   );

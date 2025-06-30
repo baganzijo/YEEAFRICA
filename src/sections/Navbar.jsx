@@ -85,19 +85,10 @@ const Navbar = () => {
           { name: 'Dashboard', path: '/student-dashboard' },
           { name: 'Internships', path: '/internships' },
           { name: 'Jobs', path: '/jobs' },
-          { name: 'Courses', path: '/courses' }
         ]
-      : role === 'tutor'
-      ? [
-          { name: 'Dashboard', path: '/tutor-dashboard' },
-          { name: 'My Courses', path: '/my-courses' },
-          { name: 'Create Course', path: '/create-course' }
-        ]
+     
       : [
-          { name: 'Internships', path: '/internships' },
-          { name: 'Jobs', path: '/jobs' },
-          { name: 'Courses', path: '/courses' },
-          { name: 'Entrepreneurs', path: '/entrepreneurs' }
+      
         ])
   ];
 

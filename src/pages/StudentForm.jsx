@@ -52,7 +52,7 @@ export default function StudentForm() {
       .upload(`students/${Date.now()}-${file.name}`, file, { upsert: true });
 
     if (error) {
-      alert('Failed to upload profile picture: ' + error.message);
+      alert('Failed to upload your profile picture: ' + error.message);
       return;
     }
 
@@ -69,7 +69,7 @@ export default function StudentForm() {
       .upload(`students/${Date.now()}-${file.name}`, file, { upsert: true });
 
     if (error) {
-      alert('Failed to upload CV: ' + error.message);
+      alert('Failed to upload your CV: ' + error.message);
       return;
     }
 
@@ -127,10 +127,13 @@ export default function StudentForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-lg shadow space-y-4">
+    <form onSubmit={handleSubmit} className="w-full mx-auto mt-10 p-6 bg-white dark:bg-gray-950 text-gray-600 dark:text-gray-500 rounded-lg shadow space-y-3">
       <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
-        {existingData ? 'Edit Your Profile' : 'Student Registration'}
+        {existingData ? 'Edit Your Profile' : 'Register your profile'}
       </h2>
+      <p className="text-semibold text-center text-gray-500 dark:text-gray-500">
+        {existingData ? "Let's not loose that job. Let's update our information and again" : 'Please be carefull while filling out the form as this information is your gateway to the job opportunies. If there is any feild you do not understand, feel free to call a friend or relative to help you out or else take your time and look for the relevant information needed'}
+      </p>
 
       <div className="flex flex-col items-center space-y-4">
         <img
@@ -144,38 +147,57 @@ export default function StudentForm() {
           </a>
         )}
       </div>
+      <p>Press the button below to upload your profile picture</p>
+      <input type="file" accept="image/*" onChange={handleProfilePicChange} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Full Names</p>
 
-      <input type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" required />
-      <input type="email" value={email} readOnly className="w-full px-4 py-2 rounded border bg-gray-100 dark:bg-gray-800 dark:text-white cursor-not-allowed" />
-      <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" required />
-      <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" required />
-      <input type="file" accept="image/*" onChange={handleProfilePicChange} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="file" accept=".pdf,.doc,.docx" onChange={handleCvChange} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
+      <input type="text" placeholder="" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" required />
+      <p>Your email address</p>
+      <input type="" value={email} readOnly className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white cursor-not-allowed" />
+      <p>Phone number which is active</p>
+      <input type="tel" placeholder="" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" required />
+      <p>Choose your date of birth</p>
+      <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" required />
+      <p>Your updated CV</p>
+      
+      <input type="file" accept=".pdf,.doc,.docx" onChange={handleCvChange} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      Select your level of educationfrom the list below
+      
 
-      <select value={schoolLevel} onChange={(e) => setSchoolLevel(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white">
-        <option value="">Select School Level</option>
+      <select value={schoolLevel} onChange={(e) => setSchoolLevel(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white">
+        <option value=""></option>
         {levels.map((lvl) => (
           <option key={lvl} value={lvl}>{lvl}</option>
         ))}
       </select>
-      <input type="text" placeholder="School Name" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="text" placeholder="Subjects / Course" value={subjects} onChange={(e) => setSubjects(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
+      <p>School name</p>
+      <input type="text" placeholder="" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Subjects or course </p>
+      <input type="text" placeholder="" value={subjects} onChange={(e) => setSubjects(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Any certifications or relevant coursework that you hold</p>
 
-      <input type="text" placeholder="Certifications or Relevant Coursework" value={certifications} onChange={(e) => setCertifications(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="text" placeholder="Skills (comma separated)" value={skills} onChange={(e) => setSkills(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="url" placeholder="Professional Work Link" value={professionalWork} onChange={(e) => setProfessionalWork(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="text" placeholder="Reference Name" value={referenceName} onChange={(e) => setReferenceName(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
-      <input type="text" placeholder="Reference Contact (phone or email)" value={referenceContact} onChange={(e) => setReferenceContact(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" />
+      <input type="text" placeholder="" value={certifications} onChange={(e) => setCertifications(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Do you hold any skill or talent? If so please fill them in</p>
+      <input type="text" placeholder="(comma separated)" value={skills} onChange={(e) => setSkills(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Do you have any recognisable work that you do? Then give us a link to it</p>
+      <p>Only links with "https://... are supported"</p>
+      <input type="url" placeholder="Link" value={professionalWork} onChange={(e) => setProfessionalWork(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Your recommender name</p>
+      <input type="text" placeholder="" value={referenceName} onChange={(e) => setReferenceName(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Recommender phone numder</p>
+      <input type="text" placeholder=" (phone or email)" value={referenceContact} onChange={(e) => setReferenceContact(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" />
+      <p>Your city/district/state of residence</p>
 
-      <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" required />
-      <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white" required>
-        <option value="">Select Country</option>
+      <input type="text" placeholder="" value={city} onChange={(e) => setCity(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" required />
+      Your country name
+      <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-900 dark:text-white" required>
+        <option value=""></option>
         {africanCountries.map((c) => (
           <option key={c} value={c}>{c}</option>
         ))}
       </select>
 
-      <button type="submit" disabled={loading} className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
+      <button type="submit" disabled={loading} className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-800 disabled:opacity-50">
         {loading ? 'Submitting...' : existingData ? 'Update Profile' : 'Submit'}
       </button>
     </form>

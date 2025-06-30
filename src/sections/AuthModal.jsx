@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { UserAuth } from '../Context/AuthContext';
 import { toast } from 'react-hot-toast';
-import { FaGoogle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const AuthModal = ({ authType, onClose, switchAuth }) => {
@@ -12,7 +11,6 @@ const AuthModal = ({ authType, onClose, switchAuth }) => {
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading]   = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
@@ -29,18 +27,6 @@ const AuthModal = ({ authType, onClose, switchAuth }) => {
       toast.error(result.error);
     }
     setLoading(false);
-  };
-
-  const handleGoogle = async () => {
-    setGoogleLoading(true);
-    const result = await googleSignIn();
-    if (!result.success) {
-      toast.error(result.error);
-      setGoogleLoading(false);
-    } else {
-      toast.success("Redirecting to Google...");
-      // Supabase OAuth redirect will happen automatically
-    }
   };
 
   return (
@@ -82,16 +68,6 @@ const AuthModal = ({ authType, onClose, switchAuth }) => {
                 : 'Login'}
           </button>
         </form>
-
-        <div className="mt-4 text-center">
-          <button
-            onClick={handleGoogle}
-            disabled={googleLoading}
-            className="flex items-center justify-center gap-2 w-full border py-2 rounded hover:bg-gray-100 transition"
-          >
-            {googleLoading ? 'Redirecting...' : <><FaGoogle /> Continue with Google</>}
-          </button>
-        </div>
 
         <div className="mt-4 text-center text-sm">
           {authType === 'register' ? (
