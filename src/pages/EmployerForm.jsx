@@ -131,7 +131,7 @@ export default function EmployerForm() {
 
       if (profErr) throw profErr;
 
-      navigate('/employer-profile');
+      navigate('/home');
     } catch (err) {
       alert('Error: ' + err.message);
     } finally {

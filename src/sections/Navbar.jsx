@@ -76,12 +76,14 @@ const Navbar = () => {
     { name: 'YEE Africa', path: '/' },
     ...(role === 'employer'
       ? [
+          { name: 'Home', path: '/home' },
           { name: 'Dashboard', path: '/employer-dashboard' },
           { name: 'Post Job', path: '/post-job' },
-          { name: 'Company Profile', path: '/employer-profile' }
+          { name: 'Company Profile', path: '/employer-profile' },
         ]
       : role === 'student'
       ? [
+          { name: 'Home', path: '/home' },
           { name: 'Dashboard', path: '/student-dashboard' },
           { name: 'Internships', path: '/internships' },
           { name: 'Jobs', path: '/jobs' },

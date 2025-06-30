@@ -118,7 +118,7 @@ export default function StudentForm() {
         .update({ profile_complete: true })
         .eq('id', userId);
 
-      navigate('/student-profile');
+      navigate('/home');
     } catch (err) {
       alert('Error: ' + err.message);
     } finally {
