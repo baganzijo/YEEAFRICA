@@ -4,7 +4,6 @@ import { supabase } from '../supabaseClient';
 import { UserAuth } from '../Context/AuthContext';
 import JobCard from '../pages/JobCard';
 import filterIcon from '../assets/filter.svg';
-import { Link } from 'react-router-dom';
 
 const StudentDashboard = () => {
   const { session } = UserAuth();
@@ -143,7 +142,6 @@ const StudentDashboard = () => {
           </span>
         </div>
 
-        {/* Applied Filters */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap gap-2">
             <input type="text" name="jobType" value={appliedFilters.jobType} onChange={(e) => handleFilterChange(e, 'applied')} placeholder="Job Type" className="border px-2 py-1 rounded text-sm" />
@@ -176,7 +174,6 @@ const StudentDashboard = () => {
           </span>
         </div>
 
-        {/* Recommended Filters */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap gap-2">
             <input type="text" name="jobType" value={recommendedFilters.jobType} onChange={(e) => handleFilterChange(e, 'recommended')} placeholder="Job Type" className="border px-2 py-1 rounded text-sm" />
@@ -191,11 +188,6 @@ const StudentDashboard = () => {
             {filteredRecommendedJobs.map((job) => (
               <div key={`${job.id}-${job.created_at}`} className="relative">
                 <JobCard job={job} />
-                <div className="absolute bottom-2 left-2">
-                  <Link to={`/apply/${job.id}`} className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full hover:bg-blue-500 hover:text-white">
-                    Apply Now
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
