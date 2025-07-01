@@ -18,6 +18,12 @@ import SignUp from './sections/SignUp';
 
 import StudentForm from './pages/StudentForm';
 import StudentProfile from './pages/StudentProfile';
+import StudentDashboard from './pages/StudentDashboard';
+import Internships from './pages/Internships';
+import Jobs from './pages/Jobs';
+import JobDetails from './pages/JobDetails';
+
+
 import TutorForm from './pages/TutorForm';
 import TutorProfile from './pages/TutorProfile';
 import EmployerForm from './pages/EmployerForm';
@@ -70,6 +76,14 @@ function App() {
           {/* ✅ Updated form paths */}
           <Route path="/student-form" element={<StudentForm />} />
           <Route path="/student-profile" element={<StudentProfile />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
+          <Route path="/internships" element={<Internships />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/job/:jobId" element={<JobDetails />} />
+
+          
+
+
           <Route path="/tutor-form" element={<TutorForm />} />
           <Route path="/tutor-profile" element={<TutorProfile />} />
           <Route path="/employer-form" element={<EmployerForm />} />
