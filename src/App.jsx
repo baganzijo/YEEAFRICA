@@ -35,6 +35,8 @@ import EmployerJobView from './pages/EmployerJobView'; // make sure you have thi
 import ViewJob from './pages/ViewJob'; // adjust path if needed
 import ApplyNow from './pages/ApplyNow';
 import ViewApplication from './pages/ViewApplication'; 
+import NotificationsPage from './pages/NotificationsPage';
+import NotificationDetails from './pages/NotificationDetails';
 
 
 function App() {
@@ -80,6 +82,9 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/job/:jobId" element={<JobDetails />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/notifications/:id" element={<NotificationDetails />} />
+
 
           
 

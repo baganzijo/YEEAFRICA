@@ -11,6 +11,7 @@ export default function ApplyNow() {
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [job, setJob] = useState(null); // for notification
 
   useEffect(() => {
     const loadUser = async () => {
@@ -18,6 +19,7 @@ export default function ApplyNow() {
       if (!user) return;
 
       setUser(user);
+
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
@@ -36,8 +38,19 @@ export default function ApplyNow() {
       }
     };
 
+    const loadJob = async () => {
+      const { data, error } = await supabase
+        .from("jobs")
+        .select("title")
+        .eq("id", jobId)
+        .single();
+
+      if (!error) setJob(data);
+    };
+
     loadUser();
-  }, []);
+    loadJob();
+  }, [jobId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,6 +72,14 @@ export default function ApplyNow() {
 
       if (error) throw error;
 
+      // ✅ Send Notification
+      await supabase.from("notifications").insert([
+        {
+          user_id: user.id,
+          message: `You have successfully applied for the job: ${job?.title || "Job"}`,
+        },
+      ]);
+
       toast.success("Application submitted successfully!", {
         autoClose: 3000,
         onClose: () => navigate("/home"),
@@ -72,7 +93,7 @@ export default function ApplyNow() {
   };
 
   return (
-      <div className="w-full flex flex-col justify-between items-center mx-auto p-6 bg-white dark:bg-gray-950 mt-12 shadow rounded">
+    <div className="w-full flex flex-col justify-between items-center mx-auto p-6 bg-white dark:bg-gray-950 mt-12 shadow rounded">
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
         Preview your details before submitting your application
       </h2>
@@ -110,10 +131,10 @@ export default function ApplyNow() {
           ) : (
             "—"
           )}
-          
         </ProfileField>
-        <ProfileField label="Reference"> {profileData.reference_name || "—"} ({profileData.reference_contact || "—"}) </ProfileField>
-        
+        <ProfileField label="Reference">
+          {profileData.reference_name || "—"} ({profileData.reference_contact || "—"})
+        </ProfileField>
 
         <ProfileField label="CV">
           {profileData.cv_url ? (
@@ -128,7 +149,7 @@ export default function ApplyNow() {
           ) : (
             "No CV uploaded"
           )}
-          </ProfileField>
+        </ProfileField>
       </div>
 
       <form onSubmit={handleSubmit} className="mt-6">
@@ -169,14 +190,6 @@ export default function ApplyNow() {
         </div>
       )}
     </div>
-
-
-
-
-
-
-
-    
   );
 }
 

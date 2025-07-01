@@ -1,7 +1,8 @@
+// Navbar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  FaBars, FaTimes, FaSearch, FaMoon, FaSun, FaUserCircle
+  FaBars, FaTimes, FaSearch, FaMoon, FaSun, FaUserCircle, FaBell
 } from 'react-icons/fa';
 import logo from '../assets/Internsavvy.png';
 import AuthModal from './AuthModal';
@@ -14,6 +15,7 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [role, setRole] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const { session, signOutUser } = UserAuth();
   const navigate = useNavigate();
@@ -43,6 +45,29 @@ const Navbar = () => {
     };
     fetchRole();
   }, [session]);
+
+ useEffect(() => {
+  let interval;
+
+  const fetchUnreadNotifications = async () => {
+    if (session?.user?.id) {
+      const { count, error } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', session.user.id)
+        .eq('is_read', false);
+
+      if (!error) setUnreadCount(count || 0);
+    }
+  };
+
+  if (session?.user?.id) {
+    fetchUnreadNotifications();
+    interval = setInterval(fetchUnreadNotifications, 30000); // auto-refresh every 30s
+  }
+
+  return () => clearInterval(interval);
+}, [session]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -82,7 +107,6 @@ const Navbar = () => {
           { name: 'Dashboard', path: '/student-dashboard' },
           { name: 'Internships', path: '/internships' },
           { name: 'Jobs', path: '/jobs' },
-         
         ]
       : [])
   ];
@@ -91,10 +115,9 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar */}
-      <header className="bg-white dark:bg-gray-950 shadow-md fixed top-0 lg:top-0 w-full z-50">
+      <header className="bg-white dark:bg-gray-950 shadow-md fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Logo & Navigation */}
+          {/* Logo and nav */}
           <div className="flex items-center gap-4">
             <img src={logo} alt="Logo" className="h-10 w-10 object-contain bg-white rounded-full" />
             <nav className="hidden lg:flex gap-6 items-center text-black dark:text-white">
@@ -112,7 +135,7 @@ const Navbar = () => {
             </nav>
           </div>
 
-          {/* Desktop Search */}
+          {/* Search */}
           {['/internships', '/jobs'].includes(location.pathname) && (
             <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full w-60 md:w-80">
               <FaSearch className="text-gray-600 dark:text-gray-300" />
@@ -124,11 +147,22 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Right Actions */}
+          {/* Right side desktop */}
           <div className="hidden lg:flex items-center gap-4 text-black dark:text-white">
             <button onClick={toggleTheme} className="text-xl ml-2">
               {darkMode ? <FaSun /> : <FaMoon />}
             </button>
+
+            {session && (
+              <Link to="/notifications" className="relative">
+                <FaBell className="text-xl hover:text-blue-500" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+            )}
 
             {session ? (
               <div className="relative" id="userDropdown">
@@ -170,14 +204,14 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Icon */}
+          {/* Mobile menu icon */}
           <div className="lg:hidden flex items-center gap-4 text-black dark:text-white">
             <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
             <button onClick={() => setMenuOpen(true)}><FaBars /></button>
           </div>
         </div>
 
-        {/* Mobile Sidebar Menu */}
+        {/* Mobile sidebar menu */}
         {menuOpen && (
           <div ref={overlayRef} className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40">
             <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-gray-950 p-6 z-50 flex flex-col">
@@ -195,6 +229,18 @@ const Navbar = () => {
                     {link.name}
                   </Link>
                 ))}
+
+                {session && (
+                  <Link to="/notifications" onClick={closeMenu} className="block px-4 py-2 rounded hover:bg-gray-800 flex justify-between items-center">
+                    Notifications
+                    {unreadCount > 0 && (
+                      <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                )}
+
                 {!session ? (
                   <>
                     <button
@@ -242,21 +288,21 @@ const Navbar = () => {
         )}
       </header>
 
+      {/* Mobile search bar */}
       {['/internships', '/jobs'].includes(location.pathname) && (
-  <div className="block lg:hidden px-4 py-4 bg-white dark:bg-gray-950 mt-16 w-full shadow">
-    <div className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full">
-      <FaSearch className="text-gray-500 dark:text-gray-300" />
-      <input
-        type="text"
-        placeholder="Search..."
-        className="bg-transparent outline-none w-full px-2 text-sm text-gray-800 dark:text-white"
-      />
-    </div>
-  </div>
-)}
+        <div className="block lg:hidden px-4 py-4 bg-white dark:bg-gray-950 mt-16 w-full shadow">
+          <div className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full">
+            <FaSearch className="text-gray-500 dark:text-gray-300" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="bg-transparent outline-none w-full px-2 text-sm text-gray-800 dark:text-white"
+            />
+          </div>
+        </div>
+      )}
 
-
-      {/* Auth Modal */}
+      {/* Auth modal */}
       {authType && (
         <AuthModal
           authType={authType}

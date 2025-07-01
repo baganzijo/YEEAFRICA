@@ -3,7 +3,17 @@ import { useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import defaultAvatar from "../assets/profile_icon.png";
 import Papa from 'papaparse';
+import { saveAs } from 'file-saver'; // Ensure this is installed via npm
 import { FaSearch } from 'react-icons/fa';
+
+// Helper to send notification
+const sendNotification = async (userId, message) => {
+  await supabase.from("notifications").insert({
+    user_id: userId,
+    message,
+    is_read: false,
+  });
+};
 
 export default function ViewApplications() {
   const { jobId } = useParams();
@@ -12,7 +22,6 @@ export default function ViewApplications() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const applicationsPerPage = 10;
   const totalPages = Math.ceil(filteredApplications.length / applicationsPerPage);
@@ -31,9 +40,7 @@ export default function ViewApplications() {
         .eq("job_id", jobId)
         .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Error fetching applications:", error);
-      } else {
+      if (!error) {
         setApplications(data);
         setFilteredApplications(data);
       }
@@ -57,74 +64,88 @@ export default function ViewApplications() {
     });
 
     setFilteredApplications(filtered);
-    setCurrentPage(1); // Reset to page 1 on search
+    setCurrentPage(1);
   }, [search, applications]);
 
   const handleStatusUpdate = async (applicationId, status) => {
+    const app = applications.find((a) => a.id === applicationId);
+    if (!app) return;
+
     const { error } = await supabase
       .from("applications")
       .update({ status })
       .eq("id", applicationId);
 
-    if (error) {
-      console.error("Failed to update status:", error);
-    } else {
+    if (!error) {
       setApplications((prev) =>
         prev.map((app) =>
           app.id === applicationId ? { ...app, status } : app
         )
       );
+
+      const { data: jobData, error: jobError } = await supabase
+        .from("jobs")
+        .select("title")
+        .eq("id", app.job_id)
+        .single();
+
+      const jobTitle = jobData?.title || "a job";
+      const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1);
+      const message = `Your application for "${jobTitle}" was ${capitalizedStatus}.`;
+
+      await sendNotification(app.user_id, message);
     }
   };
 
   const handleDownloadCSV = () => {
-      const dataToExport = filteredApps.map((app) => {
-        const d = app.data || {};
-        return {
-          FullName: d.full_name || "",
-          Email: d.email || "",
-          Phone: d.phone || "",
-          City: d.city || "",
-          Country: d.country || "",
-          School: d.school_name || "",
-          Course: d.course_or_subjects || "",
-          Skills: d.skills || "",
-          Status: statusMap[app.id] || "Pending",
-          AppliedOn: new Date(app.created_at).toLocaleString(),
-        };
-      });
-  
-      const csv = Papa.unparse(dataToExport);
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      saveAs(blob, "applications.csv");
-    };
+    const dataToExport = filteredApplications.map((app) => {
+      const d = app.data || {};
+      return {
+        FullName: d.full_name || "",
+        Email: d.email || "",
+        Phone: d.phone || "",
+        City: d.city || "",
+        Country: d.country || "",
+        School: d.school_name || "",
+        Course: d.course_or_subjects || "",
+        Skills: d.skills || "",
+        Status: app.status || "Pending",
+        AppliedOn: new Date(app.created_at).toLocaleString(),
+      };
+    });
+
+    const csv = Papa.unparse(dataToExport);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "applications.csv");
+  };
 
   if (loading) return <p className="p-6">Loading...</p>;
 
   return (
-    <div className=" mx-auto p-6 bg-white mt-10 w-full dark:bg-gray-950 shadow-lg rounded">
+    <div className="mx-auto p-6 bg-white mt-10 w-full dark:bg-gray-950 shadow-lg rounded">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
         Job Applications
       </h1>
 
-    <div className="w-full p-4 shadow-md flex justify-center items-center mb-10  bg-white dark:bg-gray-950">
-      <FaSearch className="text-gray-600 dark:text-gray-300" />
-      <input
-        type="text"
-        placeholder="Search by name, email, city, country..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className=" text-gray-800 dark:text-white py-1 outline-none flex-auto items-center  bg-gray-100 dark:bg-gray-700 px-4 rounded-full w-full"
-        
-      />
-    </div>
+      <div className="w-full p-4 shadow-md flex justify-center items-center mb-10 bg-white dark:bg-gray-950">
+        <FaSearch className="text-gray-600 dark:text-gray-300" />
+        <input
+          type="text"
+          placeholder="Search by name, email, city, country..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="text-gray-800 dark:text-white py-1 outline-none flex-auto bg-gray-100 dark:bg-gray-700 px-4 rounded-full w-full"
+        />
+      </div>
 
-      <div className="flex justify-end mb-5 gap-3"><button
+      <div className="flex justify-end mb-5 gap-3">
+        <button
           onClick={handleDownloadCSV}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           Download CSV
-        </button></div>
+        </button>
+      </div>
 
       {paginatedApplications.length === 0 ? (
         <p className="text-gray-700 dark:text-gray-300">No applications found.</p>
@@ -226,7 +247,6 @@ export default function ViewApplications() {
         </div>
       )}
 
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="mt-6 flex justify-center gap-2">
           <button
