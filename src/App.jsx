@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import OneSignal from 'react-onesignal'; // ✅ OneSignal import
+import OneSignal from 'react-onesignal';
 import { supabase } from './supabaseClient';
 
 import Navbar from './sections/Navbar';
@@ -47,13 +47,21 @@ function App() {
       setUser(session?.user || null);
     };
 
-    // ✅ Initialize OneSignal only once
-    OneSignal.init({
-      appId: 'f7760689-6a81-45a8-8f52-cebd16b74421', // 🔁 Replace with your actual OneSignal App ID
-      notifyButton: { enable: true },
-      serviceWorkerPath: '/OneSignalSDKWorker.js',
-      allowLocalhostAsSecureOrigin: true, // use only during development
-    });
+    // ✅ Initialize OneSignal inside an async IIFE
+    (async () => {
+      await OneSignal.init({
+        appId: 'f7760689-6a81-45a8-8f52-cebd16b74421', // ✅ Replace with your real app ID
+        notifyButton: { enable: true },
+        serviceWorkerPath: '/OneSignalSDKWorker.js',
+        allowLocalhostAsSecureOrigin: true,
+      });
+
+      // ✅ Set external user ID if logged in
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        OneSignal.setExternalUserId(session.user.id);
+      }
+    })();
 
     getSession();
 
@@ -105,6 +113,7 @@ function App() {
         </Routes>
       </div>
 
+      {/* ✅ Auth Modal (Login/Register popup) */}
       {authType === 'login' && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
           <SignIn
