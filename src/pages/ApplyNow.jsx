@@ -11,7 +11,7 @@ export default function ApplyNow() {
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [job, setJob] = useState(null); // for notification
+  const [job, setJob] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -41,7 +41,7 @@ export default function ApplyNow() {
     const loadJob = async () => {
       const { data, error } = await supabase
         .from("jobs")
-        .select("title")
+        .select("title, employer_id")
         .eq("id", jobId)
         .single();
 
@@ -72,13 +72,25 @@ export default function ApplyNow() {
 
       if (error) throw error;
 
-      // ✅ Send Notification
-      await supabase.from("notifications").insert([
+      // ✅ Send Notifications to both Student & Employer
+      const notifications = [
         {
           user_id: user.id,
           message: `You have successfully applied for the job: ${job?.title || "Job"}`,
+          is_read: false,
         },
-      ]);
+      ];
+
+      if (job?.employer_id) {
+        notifications.push({
+          user_id: job.employer_id,
+          message: `New application received for: ${job.title}`,
+          link: `/employer-dashboard/view-applications/${jobId}`,
+          is_read: false,
+        });
+      }
+
+      await supabase.from("notifications").insert(notifications);
 
       toast.success("Application submitted successfully!", {
         autoClose: 3000,

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import OneSignal from 'react-onesignal'; // ✅ OneSignal import
 import { supabase } from './supabaseClient';
 
 import Navbar from './sections/Navbar';
 import Footer from './sections/Footer';
+import SignIn from './sections/SignIn';
+import SignUp from './sections/SignUp';
 import Spinner from './sections/Spinner';
 
 import Introduction from './sections/Introduction';
@@ -13,16 +16,12 @@ import Home from './pages/Home';
 import AuthCallback from './pages/AuthCallback';
 import VerifyEmail from './pages/VerifyEmail';
 
-import SignIn from './sections/SignIn';
-import SignUp from './sections/SignUp';
-
 import StudentForm from './pages/StudentForm';
 import StudentProfile from './pages/StudentProfile';
 import StudentDashboard from './pages/StudentDashboard';
 import Internships from './pages/Internships';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
-
 
 import TutorForm from './pages/TutorForm';
 import TutorProfile from './pages/TutorProfile';
@@ -31,13 +30,12 @@ import EmployerProfile from './pages/EmployerProfile';
 import PostJob from './pages/PostJob';
 import EmployerDashboard from './pages/EmployerDashboard';
 import EmployersLandingPage from './pages/EmployersLandingPage';
-import EmployerJobView from './pages/EmployerJobView'; // make sure you have this page
-import ViewJob from './pages/ViewJob'; // adjust path if needed
+import EmployerJobView from './pages/EmployerJobView';
+import ViewJob from './pages/ViewJob';
 import ApplyNow from './pages/ApplyNow';
-import ViewApplication from './pages/ViewApplication'; 
+import ViewApplication from './pages/ViewApplication';
 import NotificationsPage from './pages/NotificationsPage';
 import NotificationDetails from './pages/NotificationDetails';
-
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +46,14 @@ function App() {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user || null);
     };
+
+    // ✅ Initialize OneSignal only once
+    OneSignal.init({
+      appId: 'f7760689-6a81-45a8-8f52-cebd16b74421', // 🔁 Replace with your actual OneSignal App ID
+      notifyButton: { enable: true },
+      serviceWorkerPath: '/OneSignalSDKWorker.js',
+      allowLocalhostAsSecureOrigin: true, // use only during development
+    });
 
     getSession();
 
@@ -74,8 +80,6 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/auth-callback" element={<AuthCallback />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
-
-          {/* ✅ Updated form paths */}
           <Route path="/student-form" element={<StudentForm />} />
           <Route path="/student-profile" element={<StudentProfile />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
@@ -84,39 +88,23 @@ function App() {
           <Route path="/job/:jobId" element={<JobDetails />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/notifications/:id" element={<NotificationDetails />} />
-
-
-          
-
-
           <Route path="/tutor-form" element={<TutorForm />} />
           <Route path="/tutor-profile" element={<TutorProfile />} />
           <Route path="/employer-form" element={<EmployerForm />} />
           <Route path="/employer-profile" element={<EmployerProfile />} />
           <Route path="/post-job" element={<PostJob />} />
+          <Route path="/edit-job/:jobId" element={<PostJob />} />
           <Route path="/employer-dashboard" element={<EmployerDashboard />} />
           <Route path="/employers" element={<EmployersLandingPage />} />
-          <Route path="/post-job" element={<PostJob />} />
-          <Route path="/edit-job/:jobId" element={<PostJob />} />
           <Route path="/employer/job/:id" element={<EmployerJobView />} />
           <Route path="/apply/:jobId" element={<ApplyNow />} />
           <Route path="/employer/view-job/:jobId/applicants" element={<ViewApplication />} />
-
-
-
-
-
           <Route path="/job/:id" element={<ViewJob />} />
-
-
-          {/* Standalone login/signup pages (optional) */}
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
-
       </div>
 
-      {/* ✅ Auth Modal (login/register popup from Navbar, Hero, etc.) */}
       {authType === 'login' && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
           <SignIn
