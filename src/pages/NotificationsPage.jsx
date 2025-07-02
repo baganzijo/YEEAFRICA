@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { UserAuth } from '../Context/AuthContext';
 import { FaTrash } from 'react-icons/fa';
@@ -26,6 +26,9 @@ const Notifications = () => {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const prevNotificationCount = useRef(0);
+  const audioRef = useRef(null);
+
   const fetchUserRole = async () => {
     if (!session?.user?.id) return;
     const { data, error } = await supabase
@@ -46,6 +49,13 @@ const Notifications = () => {
       .order('created_at', { ascending: false });
 
     if (!error) {
+      if (data.length > prevNotificationCount.current) {
+        audioRef.current?.play().catch((err) =>
+          console.warn('Notification sound play failed:', err)
+        );
+      }
+
+      prevNotificationCount.current = data.length;
       setNotifications(data);
     }
 
@@ -84,13 +94,18 @@ const Notifications = () => {
   if (!session) {
     return (
       <div className="p-8 text-center">
-        <h2 className="text-xl text-gray-700 dark:text-white">Please log in to view your notifications.</h2>
+        <h2 className="text-xl text-gray-700 dark:text-white">
+          Please log in to view your notifications.
+        </h2>
       </div>
     );
   }
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      {/* Audio element */}
+      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Notifications</h1>
         <button
@@ -115,9 +130,9 @@ const Notifications = () => {
                 const jobId = note.job_id;
 
                 if (role === 'student' && note.id) {
-                  linkPath = `/notification/job/${note.id}`; // ✅ directs student to custom notification job view
+                  linkPath = `/notification/job/${note.id}`;
                 } else if (role === 'employer' && jobId) {
-                  linkPath = `/employer/view-job/${jobId}/applicants`; // ✅ employer to view applicants
+                  linkPath = `/employer/view-job/${jobId}/applicants`;
                 }
 
                 return (
