@@ -25,41 +25,60 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
-
-  const prevNotificationCount = useRef(0);
   const audioRef = useRef(null);
+  const channelRef = useRef(null);
 
   const fetchUserRole = async () => {
     if (!session?.user?.id) return;
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', session.user.id)
       .single();
+
     if (data?.role) setRole(data.role);
   };
 
   const fetchNotifications = async () => {
     if (!session?.user?.id) return;
 
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('notifications')
       .select('*')
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false });
 
-    if (!error) {
-      if (data.length > prevNotificationCount.current) {
-        audioRef.current?.play().catch((err) =>
-          console.warn('Notification sound play failed:', err)
-        );
-      }
+    setNotifications(data || []);
+    setLoading(false);
+  };
 
-      prevNotificationCount.current = data.length;
-      setNotifications(data);
+  const setupRealtime = () => {
+    if (!session?.user?.id) return;
+
+    // Remove old subscription if it exists
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
     }
 
-    setLoading(false);
+    const channel = supabase
+      .channel(`notifications-${session.user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        (payload) => {
+          // Play sound and fetch new notifications
+          audioRef.current?.play().catch(() => {});
+          fetchNotifications();
+        }
+      )
+      .subscribe();
+
+    channelRef.current = channel;
   };
 
   const markAsRead = async (id) => {
@@ -78,10 +97,17 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    fetchUserRole();
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
+    if (session) {
+      fetchUserRole();
+      fetchNotifications();
+      setupRealtime();
+    }
+
+    return () => {
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+      }
+    };
   }, [session]);
 
   const groupedNotifications = notifications.reduce((acc, note) => {
@@ -94,16 +120,14 @@ const Notifications = () => {
   if (!session) {
     return (
       <div className="p-8 text-center">
-        <h2 className="text-xl text-gray-700 dark:text-white">
-          Please log in to view your notifications.
-        </h2>
+        <h2 className="text-xl text-gray-700 dark:text-white">Please log in to view your notifications.</h2>
       </div>
     );
   }
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      {/* Audio element */}
+      {/* Notification Sound */}
       <audio ref={audioRef} src="/notification.mp3" preload="auto" />
 
       <div className="flex justify-between items-center mb-6">
@@ -127,12 +151,10 @@ const Notifications = () => {
             <ul className="space-y-4">
               {notes.map((note) => {
                 let linkPath = '#';
-                const jobId = note.job_id;
-
                 if (role === 'student' && note.id) {
                   linkPath = `/notification/job/${note.id}`;
-                } else if (role === 'employer' && jobId) {
-                  linkPath = `/employer/view-job/${jobId}/applicants`;
+                } else if (role === 'employer' && note.job_id) {
+                  linkPath = `/employer/view-job/${note.job_id}/applicants`;
                 }
 
                 return (
