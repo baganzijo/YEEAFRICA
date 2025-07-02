@@ -73,24 +73,37 @@ export default function ApplyNow() {
       if (error) throw error;
 
       // ✅ Send Notifications to both Student & Employer
-      const notifications = [
-        {
-          user_id: user.id,
-          message: `You have successfully applied for the job: ${job?.title || "Job"}`,
-          is_read: false,
-        },
-      ];
+      const notifications = [];
 
-      if (job?.employer_id) {
+      if (user?.id && job?.title) {
         notifications.push({
-          user_id: job.employer_id,
-          message: `New application received for: ${job.title}`,
-          link: `/employer-dashboard/view-applications/${jobId}`,
+          user_id: user.id,
+          message: `You have successfully applied for the job: ${job.title}`,
           is_read: false,
+           job_id: jobId, 
+          link: `/job/${jobId}`,
         });
       }
 
-      await supabase.from("notifications").insert(notifications);
+      if (job?.employer_id && job?.title) {
+        notifications.push({
+          user_id: job.employer_id,
+          message: `New application received for: ${job.title}`,
+          is_read: false,
+           job_id: jobId, 
+           link: `/employer/view-job/${jobId}/applicants`,
+        });
+      }
+
+      if (notifications.length > 0) {
+        const { error: notificationError } = await supabase
+          .from("notifications")
+          .insert(notifications);
+
+        if (notificationError) {
+          console.error("Notification insert error:", notificationError.message);
+        }
+      }
 
       toast.success("Application submitted successfully!", {
         autoClose: 3000,

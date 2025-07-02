@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import defaultAvatar from "../assets/profile_icon.png";
-import Papa from 'papaparse';
-import { saveAs } from 'file-saver'; // Ensure this is installed via npm
-import { FaSearch } from 'react-icons/fa';
+import Papa from "papaparse";
+import { saveAs } from "file-saver";
+import { FaSearch } from "react-icons/fa";
+import { UserAuth } from "../Context/AuthContext";
 
 // Helper to send notification
 const sendNotification = async (userId, message) => {
@@ -17,12 +18,16 @@ const sendNotification = async (userId, message) => {
 
 export default function ViewApplications() {
   const { jobId } = useParams();
+  const { session } = UserAuth();
+  const navigate = useNavigate();
+
   const [applications, setApplications] = useState([]);
   const [filteredApplications, setFilteredApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-
+  const [authorized, setAuthorized] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
   const applicationsPerPage = 10;
   const totalPages = Math.ceil(filteredApplications.length / applicationsPerPage);
   const paginatedApplications = filteredApplications.slice(
@@ -30,6 +35,40 @@ export default function ViewApplications() {
     currentPage * applicationsPerPage
   );
 
+  // Check role and ownership
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      if (!session?.user?.id) return navigate("/unauthorized");
+
+      // Check role
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", session.user.id)
+        .single();
+
+      if (profileError || profile.role !== "employer") {
+        return navigate("/unauthorized");
+      }
+
+      // Check job ownership
+      const { data: job, error: jobError } = await supabase
+        .from("jobs")
+        .select("employer_id")
+        .eq("id", jobId)
+        .single();
+
+      if (jobError || job.employer_id !== session.user.id) {
+        return navigate("/unauthorized");
+      }
+
+      setAuthorized(true);
+    };
+
+    checkAuthorization();
+  }, [jobId, session]);
+
+  // Fetch applications
   useEffect(() => {
     const fetchApplications = async () => {
       if (!jobId) return;
@@ -48,9 +87,12 @@ export default function ViewApplications() {
       setLoading(false);
     };
 
-    fetchApplications();
-  }, [jobId]);
+    if (authorized) {
+      fetchApplications();
+    }
+  }, [jobId, authorized]);
 
+  // Filter search
   useEffect(() => {
     const searchLower = search.toLowerCase();
     const filtered = applications.filter((app) => {
@@ -78,12 +120,10 @@ export default function ViewApplications() {
 
     if (!error) {
       setApplications((prev) =>
-        prev.map((app) =>
-          app.id === applicationId ? { ...app, status } : app
-        )
+        prev.map((app) => (app.id === applicationId ? { ...app, status } : app))
       );
 
-      const { data: jobData, error: jobError } = await supabase
+      const { data: jobData } = await supabase
         .from("jobs")
         .select("title")
         .eq("id", app.job_id)
@@ -119,13 +159,12 @@ export default function ViewApplications() {
     saveAs(blob, "applications.csv");
   };
 
+  if (!authorized) return <p className="p-6 text-red-500">You are not authorized to view these applications.</p>;
   if (loading) return <p className="p-6">Loading...</p>;
 
   return (
     <div className="mx-auto p-6 bg-white mt-10 w-full dark:bg-gray-950 shadow-lg rounded">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
-        Job Applications
-      </h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Job Applications</h1>
 
       <div className="w-full p-4 shadow-md flex justify-center items-center mb-10 bg-white dark:bg-gray-950">
         <FaSearch className="text-gray-600 dark:text-gray-300" />

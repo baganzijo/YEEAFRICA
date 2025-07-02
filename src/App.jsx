@@ -35,7 +35,7 @@ import ViewJob from './pages/ViewJob';
 import ApplyNow from './pages/ApplyNow';
 import ViewApplication from './pages/ViewApplication';
 import NotificationsPage from './pages/NotificationsPage';
-import NotificationDetails from './pages/NotificationDetails';
+import StudentNotificationJobView from './pages/StudentNotificationJobView';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -95,7 +95,7 @@ function App() {
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/job/:jobId" element={<JobDetails />} />
           <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/notifications/:id" element={<NotificationDetails />} />
+          <Route path="/notification/job/:id" element={<StudentNotificationJobView />} />
           <Route path="/tutor-form" element={<TutorForm />} />
           <Route path="/tutor-profile" element={<TutorProfile />} />
           <Route path="/employer-form" element={<EmployerForm />} />

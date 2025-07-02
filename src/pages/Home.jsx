@@ -199,7 +199,7 @@ export default function Home() {
 
 function JobCard({ job }) {
   return (
-    <div className="p-[2px] rounded-lg w-full bg-gradient-to-br from-yellow-400 via-orange-500 to-red-600 max-w-md mx-auto">
+    <div className="p-[2px] rounded-lg w-full bg-gradient-to-br from-blue-50 via-blue-200 to-blue-50 dark:bg-gradient-to-br from-gray-500 via-gray-800 to-gray-600 max-w-md mx-auto">
       <div className=" rounded-lg shadow-md p-4 h-full w-full mim-h-[320px] flex flex-col justify-between bg-white dark:bg-gray-950">
       <div className="flex justify-between items-center mb-2">
         <img src={job.company_logo || defaultLogo} alt="Logo"

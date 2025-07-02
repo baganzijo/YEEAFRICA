@@ -23,19 +23,32 @@ const categorizeNotification = (dateStr) => {
 const Notifications = () => {
   const { session } = UserAuth();
   const [notifications, setNotifications] = useState([]);
+  const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchNotifications = async () => {
-    setLoading(true);
-    if (session?.user?.id) {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .order('created_at', { ascending: false });
+  const fetchUserRole = async () => {
+    if (!session?.user?.id) return;
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+    if (data?.role) setRole(data.role);
+  };
 
-      if (!error) setNotifications(data);
+  const fetchNotifications = async () => {
+    if (!session?.user?.id) return;
+
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false });
+
+    if (!error) {
+      setNotifications(data);
     }
+
     setLoading(false);
   };
 
@@ -55,6 +68,7 @@ const Notifications = () => {
   };
 
   useEffect(() => {
+    fetchUserRole();
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
@@ -96,45 +110,56 @@ const Notifications = () => {
           <div key={group} className="mb-6">
             <h2 className="text-lg font-semibold mb-2 text-gray-700 dark:text-white">{group}</h2>
             <ul className="space-y-4">
-              {notes.map((note) => (
-                <li key={note.id}>
-                  <Link
-                    to={`/notifications/${note.id}`}
-                    onClick={() => markAsRead(note.id)}
-                    className={`block p-4 rounded shadow transition ${
-                      note.is_read
-                        ? 'bg-gray-100 dark:bg-gray-800'
-                        : 'bg-yellow-50 border-l-4 border-yellow-500 dark:bg-yellow-100'
-                    }`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm text-gray-800 dark:text-gray-200">
-                          {note.message}
-                          {!note.is_read && (
-                            <span className="ml-2 text-xs font-semibold text-red-500 bg-red-100 px-2 py-0.5 rounded-full">
-                              NEW
-                            </span>
-                          )}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {new Date(note.created_at).toLocaleString()}
-                        </p>
+              {notes.map((note) => {
+                let linkPath = '#';
+                const jobId = note.job_id;
+
+                if (role === 'student' && note.id) {
+                  linkPath = `/notification/job/${note.id}`; // ✅ directs student to custom notification job view
+                } else if (role === 'employer' && jobId) {
+                  linkPath = `/employer/view-job/${jobId}/applicants`; // ✅ employer to view applicants
+                }
+
+                return (
+                  <li key={note.id}>
+                    <Link
+                      to={linkPath}
+                      onClick={() => markAsRead(note.id)}
+                      className={`block p-4 rounded shadow transition ${
+                        note.is_read
+                          ? 'bg-gray-100 dark:bg-gray-800'
+                          : 'bg-yellow-50 border-l-4 border-yellow-500 dark:bg-yellow-100'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-sm text-gray-800 dark:text-gray-200">
+                            {note.message}
+                            {!note.is_read && (
+                              <span className="ml-2 text-xs font-semibold text-red-500 bg-red-100 px-2 py-0.5 rounded-full">
+                                NEW
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(note.created_at).toLocaleString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            deleteNotification(note.id);
+                          }}
+                          className="text-red-600 hover:text-red-800"
+                          title="Delete"
+                        >
+                          <FaTrash />
+                        </button>
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          deleteNotification(note.id);
-                        }}
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </Link>
-                </li>
-              ))}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))
