@@ -90,6 +90,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await signOutUser();
     setDropdownOpen(false);
+     setRole(null); // 👈 Reset role
     navigate('/');
   };
 
