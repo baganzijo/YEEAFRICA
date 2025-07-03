@@ -244,7 +244,7 @@ const navLinks = session ? authLinks : publicLinks;
                 ))}
 
                 {session && (
-                  <Link to="/notifications" onClick={closeMenu} className="block px-4 py-2 rounded hover:bg-gray-800 flex justify-between items-center">
+                  <Link to="/notifications" onClick={closeMenu} className="px-4 py-2 rounded hover:bg-gray-800 flex justify-between items-center">
                     Notifications
                     {unreadCount > 0 && (
                       <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
