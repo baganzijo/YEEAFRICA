@@ -98,8 +98,7 @@ const Navbar = () => {
     { name: 'YEE Africa', path: '/' },
       { name: 'Internships', path: '/internships' },
   { name: 'Jobs', path: '/jobs' },
-  { name: 'About us', path: '/about' },
-  { name: 'FAQ', path: '/faq' },
+  
     ...(role === 'employer'
       ? [
           { name: 'Home', path: '/home' },

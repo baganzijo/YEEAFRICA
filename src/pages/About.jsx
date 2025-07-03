@@ -52,9 +52,12 @@ const AboutUs = () => {
         <p className="text-gray-600 dark:text-gray-400 mb-4">
           Whether you’re a student, a mentor, or an employer — we invite you to join our mission.
         </p>
-        <Link to="/register" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition">
-          Join YEE Africa
-        </Link>
+        <button
+                  onClick={() => setAuthType('register')}
+                  className="px-4 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
+                >
+                  Join YEE Africa
+                </button>
       </section>
     </div>
   );
