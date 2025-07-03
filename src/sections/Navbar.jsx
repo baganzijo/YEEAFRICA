@@ -94,27 +94,35 @@ const Navbar = () => {
     navigate('/');
   };
 
-  const navLinks = [
-    { name: 'YEE Africa', path: '/' },
-      { name: 'Internships', path: '/internships' },
+
+  const publicLinks = [
+  { name: 'YEE Africa', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'FAQ', path: '/faq' },
+  { name: 'Internships', path: '/internships' },
   { name: 'Jobs', path: '/jobs' },
-  
-    ...(role === 'employer'
-      ? [
-          { name: 'Home', path: '/home' },
-          { name: 'Dashboard', path: '/employer-dashboard' },
-          { name: 'Post Job', path: '/post-job' },
-        ]
-      : role === 'student'
-      ? [
-          { name: 'Home', path: '/home' },
-          { name: 'Dashboard', path: '/student-dashboard' },
-          { name: 'Internships', path: '/internships' },
-          { name: 'Jobs', path: '/jobs' },
-            { name: 'Saved Jobs', path: '/saved-jobs' },
-        ]
-      : [])
-  ];
+];
+
+const authLinks =
+  role === 'employer'
+    ? [
+        { name: 'Home', path: '/home' },
+        { name: 'Dashboard', path: '/employer-dashboard' },
+        { name: 'Post Job', path: '/post-job' },
+      ]
+    : role === 'student'
+    ? [
+        { name: 'Home', path: '/home' },
+        { name: 'Dashboard', path: '/student-dashboard' },
+        { name: 'Internships', path: '/internships' },
+        { name: 'Jobs', path: '/jobs' },
+        { name: 'Saved Jobs', path: '/saved-jobs' },
+      ]
+    : [];
+
+const navLinks = session ? authLinks : publicLinks;
+
+
 
   const profilePath = role ? `/${role}-profile` : '/';
 
