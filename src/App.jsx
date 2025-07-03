@@ -8,7 +8,10 @@ import Footer from './sections/Footer';
 import SignIn from './sections/SignIn';
 import SignUp from './sections/SignUp';
 import Spinner from './sections/Spinner';
-
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import InternshipList from './pages/InternshipList';
+import JobList from './pages/JobList';
 import Introduction from './sections/Introduction';
 import ChooseRole from './pages/ChooseRole';
 import Browse from './pages/Browse';
@@ -22,6 +25,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import Internships from './pages/Internships';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
+import SavedJobs from './pages/SavedJobs';
 
 import TutorForm from './pages/TutorForm';
 import TutorProfile from './pages/TutorProfile';
@@ -36,6 +40,11 @@ import ApplyNow from './pages/ApplyNow';
 import ViewApplication from './pages/ViewApplication';
 import NotificationsPage from './pages/NotificationsPage';
 import StudentNotificationJobView from './pages/StudentNotificationJobView';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
+import Faq from './pages/Faq';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -83,6 +92,11 @@ function App() {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Introduction />} />
+          <Route path="/internships" element={<InternshipList />} />
+          <Route path="/jobs" element={<JobList />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password" element={<ResetPassword />} />
+
           <Route path="/choose-role" element={<ChooseRole />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/home" element={<Home />} />
@@ -94,6 +108,7 @@ function App() {
           <Route path="/internships" element={<Internships />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/job/:jobId" element={<JobDetails />} />
+          <Route path="/saved-jobs" element={<SavedJobs />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/notification/job/:id" element={<StudentNotificationJobView />} />
           <Route path="/tutor-form" element={<TutorForm />} />
@@ -110,6 +125,13 @@ function App() {
           <Route path="/job/:id" element={<ViewJob />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+           <Route path="/faq" element={<Faq />} />
+          
+          
         </Routes>
       </div>
 

@@ -96,6 +96,10 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'YEE Africa', path: '/' },
+      { name: 'Internships', path: '/internships' },
+  { name: 'Jobs', path: '/jobs' },
+  { name: 'About us', path: '/about' },
+  { name: 'FAQ', path: '/faq' },
     ...(role === 'employer'
       ? [
           { name: 'Home', path: '/home' },
@@ -108,6 +112,7 @@ const Navbar = () => {
           { name: 'Dashboard', path: '/student-dashboard' },
           { name: 'Internships', path: '/internships' },
           { name: 'Jobs', path: '/jobs' },
+            { name: 'Saved Jobs', path: '/saved-jobs' },
         ]
       : [])
   ];

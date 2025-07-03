@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import AuthModal from "../sections/AuthModal"; // Make sure path is correct
+import { UserAuth } from "../Context/AuthContext";
 
 export default function ApplyNow() {
   const { jobId } = useParams();
   const navigate = useNavigate();
+  const { session } = UserAuth();
+
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [job, setJob] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -54,6 +59,11 @@ export default function ApplyNow() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!user) {
+      localStorage.setItem("redirectAfterLogin", `/apply-now/${jobId}`);
+      setShowAuthModal(true); // 👈 open auth modal if not logged in
+      return;
+    }
     setShowConfirm(true);
   };
 
@@ -72,7 +82,6 @@ export default function ApplyNow() {
 
       if (error) throw error;
 
-      // ✅ Send Notifications to both Student & Employer
       const notifications = [];
 
       if (user?.id && job?.title) {
@@ -80,7 +89,7 @@ export default function ApplyNow() {
           user_id: user.id,
           message: `You have successfully applied for the job: ${job.title}`,
           is_read: false,
-           job_id: jobId, 
+          job_id: jobId,
           link: `/job/${jobId}`,
         });
       }
@@ -90,8 +99,8 @@ export default function ApplyNow() {
           user_id: job.employer_id,
           message: `New application received for: ${job.title}`,
           is_read: false,
-           job_id: jobId, 
-           link: `/employer/view-job/${jobId}/applicants`,
+          job_id: jobId,
+          link: `/employer/view-job/${jobId}/applicants`,
         });
       }
 
@@ -123,7 +132,7 @@ export default function ApplyNow() {
         Preview your details before submitting your application
       </h2>
 
-      <div className="space-y-4 text-gray-600 dark:text-gray-400">
+      <div className="space-y-4 text-gray-600 dark:text-gray-400 w-full max-w-2xl">
         <ProfileField label="Profile Picture">
           <img
             src={profileData.profile_picture || "/default-avatar.png"}
@@ -177,13 +186,21 @@ export default function ApplyNow() {
         </ProfileField>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6">
+      <form onSubmit={handleSubmit} className="mt-6 w-full max-w-md">
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50"
+          className={`w-full py-2 px-4 rounded transition ${
+            !user
+              ? "bg-gray-600 text-white hover:bg-gray-700"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
         >
-          {loading ? "Submitting..." : "Submit Application"}
+          {loading
+            ? "Submitting..."
+            : user
+            ? "Submit Application"
+            : "Login to Apply"}
         </button>
       </form>
 
@@ -213,6 +230,15 @@ export default function ApplyNow() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <AuthModal
+          authType="login"
+          onClose={() => setShowAuthModal(false)}
+          switchAuth={() => {}}
+        />
       )}
     </div>
   );

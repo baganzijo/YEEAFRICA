@@ -1,31 +1,41 @@
-// src/components/AuthModal.jsx
+// Updated AuthModal.jsx with show/hide password, password recovery link, and redirect logic
 import React, { useState } from 'react';
 import { UserAuth } from '../Context/AuthContext';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const AuthModal = ({ authType, onClose, switchAuth }) => {
   if (!authType) return null;
 
-  const { signUpNewUser, signInUser, googleSignIn } = UserAuth();
-  const [email, setEmail]       = useState('');
+  const { signUpNewUser, signInUser } = UserAuth();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
     e.preventDefault();
     setLoading(true);
     const handler = authType === 'register' ? signUpNewUser : signInUser;
-    const result  = await handler(email, password);
+    const result = await handler(email, password);
 
     if (result.success) {
       toast.success(`${authType === 'register' ? 'Registered' : 'Signed in'} successfully`);
       onClose();
-      navigate(authType === 'register' ? '/choose-role' : '/home');
+
+      const redirectPath = localStorage.getItem("redirectAfterLogin");
+      if (redirectPath) {
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectPath);
+      } else {
+        navigate(authType === 'register' ? '/choose-role' : '/home');
+      }
     } else {
       toast.error(result.error);
     }
+
     setLoading(false);
   };
 
@@ -49,13 +59,35 @@ const AuthModal = ({ authType, onClose, switchAuth }) => {
             value={email} onChange={e => setEmail(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 border rounded"
-            value={password} onChange={e => setPassword(e.target.value)}
-            required
-          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              className="w-full px-4 py-2 border rounded"
+              value={password} onChange={e => setPassword(e.target.value)}
+              required
+            />
+            <span
+              onClick={() => setShowPassword(prev => !prev)}
+              className="absolute top-2.5 right-4 cursor-pointer text-gray-600"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {authType === 'login' && (
+            <div className="text-sm text-right">
+              <Link
+                to="/forgot-password"
+                onClick={onClose}
+                className="text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={loading}
@@ -64,8 +96,8 @@ const AuthModal = ({ authType, onClose, switchAuth }) => {
             {loading
               ? 'Please wait...'
               : authType === 'register'
-                ? 'Register'
-                : 'Login'}
+              ? 'Register'
+              : 'Login'}
           </button>
         </form>
 
