@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import placeholderImage from '../assets/job.svg';
+import { africanCountries } from './utils.js';
 
-const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Remote'];
+const mainTypes = ['Job', 'Internship'];
+const jobSubTypes = ['Full-time', 'Part-time', 'Remote', 'Contract'];
+const internshipSubTypes = ['Full-time', 'Part-time', 'Remote'];
 const industries = [
   'Information Technology', 'Finance', 'Healthcare', 'Education', 'Engineering',
   'Marketing', 'Hospitality', 'Construction', 'Agriculture', 'Other'
 ];
-const africanCountries = [
-  'Uganda', 'Kenya', 'Tanzania', 'Rwanda', 'Nigeria', 'Ghana', 'South Africa', 'Ethiopia',
-  'Egypt', 'Morocco', 'Algeria', 'Tunisia', 'Senegal', 'Zambia', 'Zimbabwe', 'Botswana',
-  'Namibia', 'Sudan', 'Angola', 'Cameroon'
-];
-const qualifications = ['High School', 'Diploma', 'Bachelor’s', 'Master’s', 'PhD'];
+const qualifications = ['Primary', 'O-Level', 'A-Level', 'Certificate', 'Diploma', 'Bachelor', 'Masters', 'PhD', 'Professional'];
 
 export default function JobForm() {
   const { jobId } = useParams();
@@ -22,14 +20,12 @@ export default function JobForm() {
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Employer data
   const [companyLogo, setCompanyLogo] = useState(null);
   const [companyName, setCompanyName] = useState('');
 
-
-  // Form fields
   const [title, setTitle] = useState('');
-  const [type, setType] = useState('');
+  const [category, setCategory] = useState(''); // Internship or Job
+  const [type, setType] = useState(''); // Full-time, etc.
   const [industry, setIndustry] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
@@ -43,24 +39,22 @@ export default function JobForm() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const [existingImageUrl, setExistingImageUrl] = useState(null);
 
-  // Auth & employer logo
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (!user) return navigate('/signin');
       setUserId(user.id);
 
-      // Fetch employer info
       const { data: employer } = await supabase
         .from('employers')
         .select('logo_url, company_name')
         .eq('id', user.id)
         .single();
+
       setCompanyLogo(employer?.logo_url || null);
       setCompanyName(employer?.company_name || '');
     });
   }, [navigate]);
 
-  // Load job for edit mode
   useEffect(() => {
     if (!jobId) return;
     const fetchJob = async () => {
@@ -73,7 +67,8 @@ export default function JobForm() {
       if (error) return console.error(error);
 
       setTitle(data.title);
-      setType(data.type);
+      setCategory(data.category || '');
+      setType(data.type || '');
       setIndustry(data.industry);
       const [jobCity, jobCountry] = (data.location || '').split(',').map(part => part.trim());
       setCity(jobCity || '');
@@ -82,7 +77,7 @@ export default function JobForm() {
       setDescription(data.description);
       setRequirements(data.requirements);
       setSalary(data.salary);
-      setQualLevel(data.qualifications || '');
+      setQualLevel(data.qualifications?.[0] || '');
       setResponsibilities(data.responsibilities || '');
       setExistingImageUrl(data.image_url);
       setImagePreviewUrl(data.image_url || null);
@@ -118,16 +113,13 @@ export default function JobForm() {
 
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = supabase
-          .storage
-          .from('job-images')
-          .getPublicUrl(path);
-
+        const { data: urlData } = supabase.storage.from('job-images').getPublicUrl(path);
         imageUrl = urlData.publicUrl;
       }
 
       const jobData = {
         title,
+        category,
         type,
         industry,
         location: `${city}, ${country}`,
@@ -188,15 +180,34 @@ export default function JobForm() {
           className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
         />
 
+        {/* Main Category */}
         <select
-          value={type}
-          onChange={e => setType(e.target.value)}
+          value={category}
+          onChange={e => {
+            setCategory(e.target.value);
+            setType('');
+          }}
           required
           className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
         >
-          <option value="">Select Job Type</option>
-          {jobTypes.map(t => <option key={t} value={t}>{t}</option>)}
+          <option value="">Select Job Category</option>
+          {mainTypes.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
+
+        {/* Sub Type */}
+        {category && (
+          <select
+            value={type}
+            onChange={e => setType(e.target.value)}
+            required
+            className="w-full border rounded px-4 py-2 dark:bg-gray-800 dark:text-white"
+          >
+            <option value="">Select Type</option>
+            {(category === 'Internship' ? internshipSubTypes : jobSubTypes).map(t => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
+        )}
 
         <select
           value={industry}

@@ -38,7 +38,7 @@ function JobCard({ job }) {
         .select("*")
         .eq("user_id", session.user.id)
         .eq("job_id", job.id)
-        .maybeSingle(); // prevents 404 spam
+        .maybeSingle();
 
       if (error && error.code !== "PGRST116") {
         console.error("Bookmark fetch error:", error.message);
@@ -73,7 +73,6 @@ function JobCard({ job }) {
       onClick={() => navigate(`/job/${job.id}`)}
       className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200 relative"
     >
-      {/* Bookmark Icon */}
       <div
         onClick={handleBookmark}
         className="absolute top-3 right-3 text-yellow-500 hover:scale-110 transition"
@@ -81,7 +80,6 @@ function JobCard({ job }) {
         {bookmarked ? <FaBookmark /> : <FaRegBookmark />}
       </div>
 
-      {/* Logo & Title */}
       <div className="flex items-center gap-3 mb-3">
         <img
           src={job.company_logo || defaultLogo}
@@ -98,7 +96,6 @@ function JobCard({ job }) {
         </div>
       </div>
 
-      {/* Location */}
       {job.location && (
         <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
           <FaMapMarkerAlt className="text-xs" />
@@ -106,7 +103,6 @@ function JobCard({ job }) {
         </p>
       )}
 
-      {/* Type badge */}
       {job.type && (
         <span
           className={`inline-block mt-2 px-3 py-1 text-xs font-semibold rounded-full ${
@@ -121,7 +117,6 @@ function JobCard({ job }) {
         </span>
       )}
 
-      {/* Salary & Deadline */}
       <div className="flex justify-between items-center mt-4 text-sm">
         <span className="text-green-600 font-medium">
           {job.salary ? `$${job.salary}` : "Not specified"}
@@ -164,13 +159,9 @@ export default function Home() {
         .from("students")
         .select("*")
         .eq("id", session.user.id)
-        .limit(1)
         .single();
 
-      if (error) {
-        console.error("Student fetch error:", error.message);
-      }
-
+      if (error) console.error("Student fetch error:", error.message);
       setStudent(studentData);
 
       const { data: jobsData, error: jobsError } = await supabase
@@ -178,9 +169,7 @@ export default function Home() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (jobsError) {
-        console.error("Jobs fetch error:", jobsError.message);
-      }
+      if (jobsError) console.error("Jobs fetch error:", jobsError.message);
 
       if (jobsData) {
         setJobs(jobsData);
@@ -223,6 +212,14 @@ export default function Home() {
 
     setFilteredJobs(result);
   }, [search, filters, jobs]);
+
+  const internshipsOnly = filteredJobs.filter(
+    (job) => job.category?.toLowerCase() === "internship"
+  );
+  const jobsOnly = filteredJobs.filter(
+    (job) => job.category?.toLowerCase() === "job"
+  );
+  const allJobs = filteredJobs;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -285,7 +282,7 @@ export default function Home() {
         </select>
       </div>
 
-      {/* Advert Carousel */}
+      {/* Carousel */}
       <Swiper
         modules={[Autoplay]}
         autoplay={{ delay: 3000 }}
@@ -305,11 +302,35 @@ export default function Home() {
         ))}
       </Swiper>
 
-      {/* Jobs Section */}
-      <h2 className="text-xl font-bold mb-4">Available Job Opportunities</h2>
+      {/* Urgently Hiring */}
+      <h2 className="text-xl font-bold mb-4">Urgently Hiring Now</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
+        {allJobs.length > 0 ? (
+          allJobs.map((job) => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-center text-gray-500 dark:text-gray-300 col-span-full">
+            No jobs match your search or filters.
+          </p>
+        )}
+      </div>
+
+      {/* Internships Only */}
+      <h2 className="text-xl font-bold mt-12 mb-4">For Interns Only</h2>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {internshipsOnly.length > 0 ? (
+          internshipsOnly.map((job) => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-center text-gray-500 dark:text-gray-300 col-span-full">
+            No internships match your search or filters.
+          </p>
+        )}
+      </div>
+
+      {/* Jobs Only */}
+      <h2 className="text-xl font-bold mt-12 mb-4">Hot Jobs</h2>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {jobsOnly.length > 0 ? (
+          jobsOnly.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
           <p className="text-center text-gray-500 dark:text-gray-300 col-span-full">
             No jobs match your search or filters.

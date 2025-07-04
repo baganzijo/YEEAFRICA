@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import defaultLogo from '../assets/profile_icon.png'; // fallback placeholder image
-
-const africanCountries = ["Uganda", "Kenya", "Nigeria", "Ghana", "Tanzania", "Rwanda", "South Africa"];
+import { africanCountries } from './utils';
+//const africanCountries = ["Uganda", "Kenya", "Nigeria", "Ghana", "Tanzania", "Rwanda", "South Africa"];
 
 const industries = ["Agriculture", "Banking & Finance", "Education", "Healthcare",
   "Information Technology", "Manufacturing", "Retail", "Telecom",

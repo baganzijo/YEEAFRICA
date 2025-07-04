@@ -42,7 +42,7 @@ export default function JobDetails() {
       } = await supabase.auth.getUser();
 
       if (userError || !currentUser) {
-        setErrorApp('User not logged in');
+       // setErrorApp('User not logged in');
         setLoadingApp(false);
         return;
       }
@@ -116,8 +116,7 @@ export default function JobDetails() {
       <p className="mb-1"><strong>Industry:</strong> {job.industry}</p>
       <p className="mb-1"><strong>Location:</strong> {job.location}</p>
       <p className="mb-1"><strong>Application Deadline:</strong> {new Date(job.application_deadline).toLocaleDateString()}</p>
-      <p className="mb-4"><strong>Salary:</strong> ${job.salary || 'Not specified'}</p>
-
+      <p className="mb-4">  <strong>Salary:</strong>{' '}  {job.salary === '' || job.salary == null ? 'Not specified' : `$${job.salary}`}</p>
       <h2 className="text-xl font-semibold mb-2">Job Description</h2>
       <p className="mb-4 whitespace-pre-line">{job.description}</p>
 
@@ -142,7 +141,7 @@ export default function JobDetails() {
 
         {!loadingApp && !application && (
           <div>
-            <p className="text-gray-700">You have not applied to this job yet.</p>
+            {/* <p className="text-gray-700">You have not applied to this job yet.</p> */}
             <Link
               to={`/apply/${job.id}`}
               className="mt-3 inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"

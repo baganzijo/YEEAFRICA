@@ -11,6 +11,7 @@ const Jobs = () => {
     location: '',
     industry: '',
     type: '',
+    qualification: '',
   });
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const Jobs = () => {
       const { data, error } = await supabase
         .from('jobs')
         .select('*')
-        .in('type', ['Full-time', 'Part-time', 'Remote'])
+        .eq('category', 'Job') // ✅ KEY FIX: now using `category`
         .order('created_at', { ascending: false });
 
       if (!error) {
@@ -31,11 +32,11 @@ const Jobs = () => {
   }, []);
 
   useEffect(() => {
-    let result = jobs;
+    let result = [...jobs];
 
     if (search) {
       result = result.filter((job) =>
-        job.title.toLowerCase().includes(search.toLowerCase()) ||
+        job.title?.toLowerCase().includes(search.toLowerCase()) ||
         job.company_name?.toLowerCase().includes(search.toLowerCase())
       );
     }
@@ -58,6 +59,18 @@ const Jobs = () => {
       );
     }
 
+    if (filters.qualification) {
+  result = result.filter((job) =>
+    Array.isArray(job.qualifications) &&
+    job.qualifications.some(
+      (q) =>
+        typeof q === 'string' &&
+        q.toLowerCase() === filters.qualification.toLowerCase()
+    )
+  );
+}
+
+
     setFilteredJobs(result);
   }, [search, filters, jobs]);
 
@@ -65,8 +78,9 @@ const Jobs = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Available Job Opportunities</h1>
 
-      {/* Search + Filters */}
+      {/* Filter Bar */}
       <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow mb-6 grid md:grid-cols-4 gap-4">
+        {/* Search Bar */}
         <div className="relative col-span-2">
           <FaSearch className="absolute top-3 left-3 text-gray-500" />
           <input
@@ -78,30 +92,37 @@ const Jobs = () => {
           />
         </div>
 
+        {/* Location Filter */}
         <select
           value={filters.location}
           onChange={(e) => setFilters((prev) => ({ ...prev, location: e.target.value }))}
           className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Locations</option>
-          <option value="Nairobi">Nairobi</option>
-          <option value="Kampala">Kampala</option>
-          <option value="Lagos">Lagos</option>
-          <option value="Remote">Remote</option>
+          {/* Keep your country list here */}
+          <option value="Uganda">Uganda</option>
+          <option value="Kenya">Kenya</option>
+          <option value="Nigeria">Nigeria</option>
+          <option value="Ghana">Ghana</option>
+          {/* ... other countries */}
         </select>
 
+        {/* Industry Filter */}
         <select
           value={filters.industry}
           onChange={(e) => setFilters((prev) => ({ ...prev, industry: e.target.value }))}
           className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Industries</option>
-          <option value="Tech">Tech</option>
-          <option value="Design">Design</option>
-          <option value="Healthcare">Healthcare</option>
+          <option value="Information Technology">Information Technology</option>
           <option value="Finance">Finance</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Education">Education</option>
+          <option value="Engineering">Engineering</option>
+          {/* ...other industries */}
         </select>
 
+        {/* Job Type Filter */}
         <select
           value={filters.type}
           onChange={(e) => setFilters((prev) => ({ ...prev, type: e.target.value }))}
@@ -111,6 +132,25 @@ const Jobs = () => {
           <option value="Full-time">Full-time</option>
           <option value="Part-time">Part-time</option>
           <option value="Remote">Remote</option>
+          <option value="Contract">Contract</option>
+        </select>
+
+        {/* Qualification Filter */}
+        <select
+          value={filters.qualification}
+          onChange={(e) => setFilters((prev) => ({ ...prev, qualification: e.target.value }))}
+          className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
+        >
+          <option value="">All Qualifications</option>
+          <option value="Primary">Primary</option>
+          <option value="O-Level">O-Level</option>
+          <option value="A-Level">A-Level</option>
+          <option value="Certificate">Certificate</option>
+          <option value="Diploma">Diploma</option>
+          <option value="Bachelor">Bachelor's Degree</option>
+          <option value="Masters">Master's Degree</option>
+          <option value="PhD">PhD / Doctorate</option>
+          <option value="Professional">Professional Qualification</option>
         </select>
       </div>
 
