@@ -45,6 +45,7 @@ import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Faq from './pages/Faq';
+import ScrollToTop from "./sections/ScrollToTop";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -90,7 +91,8 @@ function App() {
       <Navbar onOpenAuthModal={setAuthType} />
 
       <div className="flex-grow">
-        <Routes>
+        <ScrollToTop />
+        <Routes>  
           <Route path="/" element={<Introduction />} />
           <Route path="/internships" element={<InternshipList />} />
           <Route path="/jobs" element={<JobList />} />
