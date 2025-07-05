@@ -20,6 +20,22 @@ import { UserAuth } from "../Context/AuthContext";
 
 const advertImages = [ad1, ad2, ad3, ad4, ad5];
 
+const industries = [
+  "Aerospace", "Agriculture", "Architecture & Design", "Automotive", "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy", "Cloud Computing", "Construction", "Consulting", "Consumer Goods", "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education", "Electronics", "Energy", "Environmental Services", "Event Planning", "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture", "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology", "Healthcare", "Hospitality", "Human Resources", "Import & Export", "Industrial Automation", "Information Technology", "Insurance", "Interior Design", "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics", "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment", "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit", "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations", "Publishing", "Real Estate", "Renewable Energy", "Research & Development", "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime", "Social Services", "Software Development", "Sports & Recreation", "Supply Chain", "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities", "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
+];
+
+const countries = [
+ "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
+            "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros",
+            "Democratic Republic of the Congo", "Republic of the Congo", "Côte d'Ivoire",
+            "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia",
+            "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho",
+            "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius",
+            "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "São Tomé and Príncipe",
+            "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan",
+            "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"
+];
+
 function formatDate(dateString) {
   const options = { year: "numeric", month: "short", day: "numeric" };
   return new Date(dateString).toLocaleDateString(undefined, options);
@@ -248,10 +264,9 @@ export default function Home() {
           className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Locations</option>
-          <option value="Nairobi">Nairobi</option>
-          <option value="Kampala">Kampala</option>
-          <option value="Lagos">Lagos</option>
-          <option value="Remote">Remote</option>
+          {countries.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
         </select>
 
         <select
@@ -262,10 +277,9 @@ export default function Home() {
           className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Industries</option>
-          <option value="Tech">Tech</option>
-          <option value="Design">Design</option>
-          <option value="Healthcare">Healthcare</option>
-          <option value="Finance">Finance</option>
+          {industries.map((i) => (
+            <option key={i} value={i}>{i}</option>
+          ))}
         </select>
 
         <select

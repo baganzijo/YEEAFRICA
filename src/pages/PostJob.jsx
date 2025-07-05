@@ -8,8 +8,7 @@ const mainTypes = ['Job', 'Internship'];
 const jobSubTypes = ['Full-time', 'Part-time', 'Remote', 'Contract'];
 const internshipSubTypes = ['Full-time', 'Part-time', 'Remote'];
 const industries = [
-  'Information Technology', 'Finance', 'Healthcare', 'Education', 'Engineering',
-  'Marketing', 'Hospitality', 'Construction', 'Agriculture', 'Other'
+  "Aerospace", "Agriculture", "Architecture & Design", "Automotive", "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy", "Cloud Computing", "Construction", "Consulting", "Consumer Goods", "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education", "Electronics", "Energy", "Environmental Services", "Event Planning", "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture", "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology", "Healthcare", "Hospitality", "Human Resources", "Import & Export", "Industrial Automation", "Information Technology", "Insurance", "Interior Design", "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics", "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment", "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit", "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations", "Publishing", "Real Estate", "Renewable Energy", "Research & Development", "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime", "Social Services", "Software Development", "Sports & Recreation", "Supply Chain", "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities", "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
 ];
 const qualifications = ['Primary', 'O-Level', 'A-Level', 'Certificate', 'Diploma', 'Bachelor', 'Masters', 'PhD', 'Professional'];
 

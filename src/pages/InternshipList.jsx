@@ -60,25 +60,24 @@ const InternshipList = () => {
     }
 
     if (filters.qualification) {
-  result = result.filter((job) =>
-    job.qualifications?.some((q) =>
-      q.toLowerCase() === filters.qualification.toLowerCase()
-    )
-  );
-}
-
+      result = result.filter((job) =>
+        job.qualifications?.some(
+          (q) => q.toLowerCase() === filters.qualification.toLowerCase()
+        )
+      );
+    }
 
     setFilteredJobs(result);
   }, [search, filters, internships]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Available Internships</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">🎓 Available Internships</h1>
 
       {/* Filter Bar */}
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow mb-6 grid md:grid-cols-4 gap-4">
+      <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Search */}
-        <div className="relative col-span-2">
+        <div className="relative col-span-1 sm:col-span-2">
           <FaSearch className="absolute top-3 left-3 text-gray-500" />
           <input
             type="text"
@@ -93,118 +92,43 @@ const InternshipList = () => {
         <select
           value={filters.location}
           onChange={(e) => setFilters((prev) => ({ ...prev, location: e.target.value }))}
-          className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
+          className="w-full border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Locations</option>
-          <option value="Algeria">Algeria</option>
-  <option value="Angola">Angola</option>
-  <option value="Benin">Benin</option>
-  <option value="Botswana">Botswana</option>
-  <option value="Burkina Faso">Burkina Faso</option>
-  <option value="Burundi">Burundi</option>
-  <option value="Cabo Verde">Cabo Verde (Cape Verde)</option>
-  <option value="Cameroon">Cameroon</option>
-  <option value="Central African Republic">Central African Republic</option>
-  <option value="Chad">Chad</option>
-  <option value="Comoros">Comoros</option>
-  <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
-  <option value="Republic of the Congo">Republic of the Congo</option>
-  <option value="Côte d'Ivoire">Côte d'Ivoire (Ivory Coast)</option>
-  <option value="Djibouti">Djibouti</option>
-  <option value="Egypt">Egypt</option>
-  <option value="Equatorial Guinea">Equatorial Guinea</option>
-  <option value="Eritrea">Eritrea</option>
-  <option value="Eswatini">Eswatini (Swaziland)</option>
-  <option value="Ethiopia">Ethiopia</option>
-  <option value="Gabon">Gabon</option>
-  <option value="Gambia">The Gambia</option>
-  <option value="Ghana">Ghana</option>
-  <option value="Guinea">Guinea</option>
-  <option value="Guinea-Bissau">Guinea-Bissau</option>
-  <option value="Kenya">Kenya</option>
-  <option value="Lesotho">Lesotho</option>
-  <option value="Liberia">Liberia</option>
-  <option value="Libya">Libya</option>
-  <option value="Madagascar">Madagascar</option>
-  <option value="Malawi">Malawi</option>
-  <option value="Mali">Mali</option>
-  <option value="Mauritania">Mauritania</option>
-  <option value="Mauritius">Mauritius</option>
-  <option value="Morocco">Morocco</option>
-  <option value="Mozambique">Mozambique</option>
-  <option value="Namibia">Namibia</option>
-  <option value="Niger">Niger</option>
-  <option value="Nigeria">Nigeria</option>
-  <option value="Rwanda">Rwanda</option>
-  <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
-  <option value="Senegal">Senegal</option>
-  <option value="Seychelles">Seychelles</option>
-  <option value="Sierra Leone">Sierra Leone</option>
-  <option value="Somalia">Somalia</option>
-  <option value="South Africa">South Africa</option>
-  <option value="South Sudan">South Sudan</option>
-  <option value="Sudan">Sudan</option>
-  <option value="Tanzania">Tanzania</option>
-  <option value="Togo">Togo</option>
-  <option value="Tunisia">Tunisia</option>
-  <option value="Uganda">Uganda</option>
-  <option value="Zambia">Zambia</option>
-  <option value="Zimbabwe">Zimbabwe</option>
+          {[
+            "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
+            "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros",
+            "Democratic Republic of the Congo", "Republic of the Congo", "Côte d'Ivoire",
+            "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia",
+            "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho",
+            "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius",
+            "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "São Tomé and Príncipe",
+            "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan",
+            "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"
+          ].map((country) => (
+            <option key={country} value={country}>{country}</option>
+          ))}
         </select>
 
         {/* Industry Filter */}
         <select
           value={filters.industry}
           onChange={(e) => setFilters((prev) => ({ ...prev, industry: e.target.value }))}
-          className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
+          className="w-full border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Industries</option>
-         <option value="Agriculture">Agriculture</option>
-  <option value="Automotive">Automotive</option>
-  <option value="Banking & Finance">Banking & Finance</option>
-  <option value="Biotechnology">Biotechnology</option>
-  <option value="Construction">Construction</option>
-  <option value="Consulting">Consulting</option>
-  <option value="Consumer Goods">Consumer Goods</option>
-  <option value="Creative Arts & Design">Creative Arts & Design</option>
-  <option value="Customer Service">Customer Service</option>
-  <option value="Education">Education</option>
-  <option value="Energy">Energy (Oil, Gas, Renewable)</option>
-  <option value="Engineering">Engineering</option>
-  <option value="Entertainment & Media">Entertainment & Media</option>
-  <option value="Environmental Services">Environmental Services</option>
-  <option value="Fashion">Fashion</option>
-  <option value="Food & Beverage">Food & Beverage</option>
-  <option value="Government">Government & Public Administration</option>
-  <option value="Healthcare">Healthcare</option>
-  <option value="Hospitality">Hospitality & Tourism</option>
-  <option value="Human Resources">Human Resources</option>
-  <option value="Information Technology">Information Technology (IT)</option>
-  <option value="Insurance">Insurance</option>
-  <option value="Legal">Legal Services</option>
-  <option value="Logistics">Logistics & Supply Chain</option>
-  <option value="Manufacturing">Manufacturing</option>
-  <option value="Marketing">Marketing & Advertising</option>
-  <option value="Mining & Metals">Mining & Metals</option>
-  <option value="Nonprofit">Nonprofit & NGO</option>
-  <option value="Pharmaceuticals">Pharmaceuticals</option>
-  <option value="Real Estate">Real Estate</option>
-  <option value="Retail">Retail</option>
-  <option value="Sales">Sales</option>
-  <option value="Science & Research">Science & Research</option>
-  <option value="Security">Security & Law Enforcement</option>
-  <option value="Sports & Recreation">Sports & Recreation</option>
-  <option value="Telecommunications">Telecommunications</option>
-  <option value="Transportation">Transportation</option>
-  <option value="Utilities">Utilities</option>
-  <option value="Writing & Editing">Writing & Editing</option>
+          {[
+            "Aerospace", "Agriculture", "Architecture & Design", "Automotive", "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy", "Cloud Computing", "Construction", "Consulting", "Consumer Goods", "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education", "Electronics", "Energy", "Environmental Services", "Event Planning", "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture", "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology", "Healthcare", "Hospitality", "Human Resources", "Import & Export", "Industrial Automation", "Information Technology", "Insurance", "Interior Design", "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics", "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment", "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit", "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations", "Publishing", "Real Estate", "Renewable Energy", "Research & Development", "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime", "Social Services", "Software Development", "Sports & Recreation", "Supply Chain", "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities", "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
+          ].map((industry) => (
+            <option key={industry} value={industry}>{industry}</option>
+          ))}
         </select>
 
-        {/* Job Type Filter */}
+        {/* Type Filter */}
         <select
           value={filters.type}
           onChange={(e) => setFilters((prev) => ({ ...prev, type: e.target.value }))}
-          className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
+          className="w-full border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
         >
           <option value="">All Types</option>
           <option value="Full-time">Full-time</option>
@@ -212,31 +136,35 @@ const InternshipList = () => {
           <option value="Remote">Remote</option>
         </select>
 
+        {/* Qualification Filter */}
         <select
-  value={filters.qualification}
-  onChange={(e) => setFilters((prev) => ({ ...prev, qualification: e.target.value }))}
-  className="border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
->
-  <option value="">All Qualifications</option>
-  <option value="Primary">Primary</option>
-  <option value="O-Level">O-Level</option>
-  <option value="A-Level">A-Level</option>
-  <option value="Certificate">Certificate</option>
-  <option value="Diploma">Diploma</option>
-  <option value="Bachelor">Bachelor's Degree</option>
-  <option value="Masters">Master's Degree</option>
-  <option value="PhD">PhD / Doctorate</option>
-  <option value="Professional">Professional Qualification</option>
-</select>
-
+          value={filters.qualification}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, qualification: e.target.value }))
+          }
+          className="w-full border px-3 py-2 rounded text-sm dark:bg-gray-800 dark:text-white"
+        >
+          <option value="">All Qualifications</option>
+          <option value="Primary">Primary</option>
+          <option value="O-Level">O-Level</option>
+          <option value="A-Level">A-Level</option>
+          <option value="Certificate">Certificate</option>
+          <option value="Diploma">Diploma</option>
+          <option value="Bachelor">Bachelor's Degree</option>
+          <option value="Masters">Master's Degree</option>
+          <option value="PhD">PhD / Doctorate</option>
+          <option value="Professional">Professional Qualification</option>
+        </select>
       </div>
 
       {/* Internship Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredJobs.length > 0 ? (
           filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
-          <p className="text-gray-600 dark:text-gray-400 col-span-full">No internships found.</p>
+          <p className="col-span-full text-center text-gray-600 dark:text-gray-400">
+            No internships found.
+          </p>
         )}
       </div>
     </div>
