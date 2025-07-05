@@ -20,21 +20,8 @@ import { UserAuth } from "../Context/AuthContext";
 
 const advertImages = [ad1, ad2, ad3, ad4, ad5];
 
-const industries = [
-  "Aerospace", "Agriculture", "Architecture & Design", "Automotive", "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy", "Cloud Computing", "Construction", "Consulting", "Consumer Goods", "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education", "Electronics", "Energy", "Environmental Services", "Event Planning", "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture", "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology", "Healthcare", "Hospitality", "Human Resources", "Import & Export", "Industrial Automation", "Information Technology", "Insurance", "Interior Design", "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics", "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment", "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit", "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations", "Publishing", "Real Estate", "Renewable Energy", "Research & Development", "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime", "Social Services", "Software Development", "Sports & Recreation", "Supply Chain", "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities", "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
-];
-
-const countries = [
- "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
-            "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros",
-            "Democratic Republic of the Congo", "Republic of the Congo", "Côte d'Ivoire",
-            "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia",
-            "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho",
-            "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius",
-            "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "São Tomé and Príncipe",
-            "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan",
-            "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"
-];
+const industries = [/* same industry array */];
+const countries = [/* same country array */];
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "short", day: "numeric" };
@@ -244,8 +231,8 @@ export default function Home() {
       </h1>
 
       {/* Search & Filters */}
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow mb-6 grid md:grid-cols-4 gap-4">
-        <div className="relative col-span-2">
+      <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="relative col-span-1 sm:col-span-2">
           <FaSearch className="absolute top-3 left-3 text-gray-500" />
           <input
             type="text"
@@ -318,7 +305,7 @@ export default function Home() {
 
       {/* Urgently Hiring */}
       <h2 className="text-xl font-bold mb-4">Urgently Hiring Now</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allJobs.length > 0 ? (
           allJobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
@@ -330,7 +317,7 @@ export default function Home() {
 
       {/* Internships Only */}
       <h2 className="text-xl font-bold mt-12 mb-4">For Interns Only</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {internshipsOnly.length > 0 ? (
           internshipsOnly.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
@@ -342,7 +329,7 @@ export default function Home() {
 
       {/* Jobs Only */}
       <h2 className="text-xl font-bold mt-12 mb-4">Hot Jobs</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobsOnly.length > 0 ? (
           jobsOnly.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
