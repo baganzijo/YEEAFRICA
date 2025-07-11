@@ -9,7 +9,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: 'YEE Africa',
-        short_name: 'YEE',
+        short_name: 'Yee',
         description: 'Find internships and job opportunities across Africa.',
         start_url: '/',
         display: 'standalone',
