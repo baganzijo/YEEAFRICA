@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
   return (
-    <div className="bg-white dark:bg-gray-950 text-gray-800 dark:text-white py-16 px-6 max-w-6xl mx-auto">
+    <div className="bg-white dark:bg-gray-950 text-gray-800 dark:text-white mb-10 py-16 px-6 max-w-6xl mx-auto">
       {/* Hero */}
       <section className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Empowering Africa’s Next Generation</h1>
+        <h1 className="text-4xl font-bold mb-4">About Us</h1>
         <p className="text-lg max-w-2xl mx-auto">
-          YEE Africa is a career and internship hub bridging students, young professionals, and employers across Africa and beyond.
+          YEE Africa connects students, young professionals to employers across Africa and beyond.
         </p>
       </section>
 
@@ -52,12 +52,6 @@ const AboutUs = () => {
         <p className="text-gray-600 dark:text-gray-400 mb-4">
           Whether you’re a student, a mentor, or an employer — we invite you to join our mission.
         </p>
-        <button
-                  onClick={() => setAuthType('register')}
-                  className="px-4 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-                >
-                  Join YEE Africa
-                </button>
       </section>
     </div>
   );

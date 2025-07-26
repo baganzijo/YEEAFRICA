@@ -126,7 +126,7 @@ const Notifications = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8 mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       {/* Notification Sound */}
       <audio ref={audioRef} src="/notification.mp3" preload="auto" />
 

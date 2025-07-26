@@ -29,7 +29,7 @@ export default function StudentProfile() {
   if (!student) return <p className="text-center mt-10">No profile found.</p>;
 
   return (
-    <div className="w-full mx-auto mt-10 bg-white dark:bg-gray-950 space-y-6 relative">
+    <div className="w-full mx-auto mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white space-y-6 relative">
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-950 rounded-lg shadow space-y-2 relative">
         <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">My Profile</h2>
 

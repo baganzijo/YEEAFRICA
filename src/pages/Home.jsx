@@ -234,7 +234,7 @@ export default function Home() {
   const allJobs = filteredJobs;
 
   return (
-    <div className="max-w-7xl mt-10 mx-auto px-4 py-8">
+    <div className="max-w-7xl mt-10 mx-auto px-4 py-8 bg-white dark:bg-gray-950 text-black dark:text-white ">
       <h1 className="text-2xl font-bold mb-4">
         👋 {greeting}, {student?.full_name || "Friend"}
       </h1>
@@ -313,7 +313,7 @@ export default function Home() {
       </Swiper>
 
       {/* Urgently Hiring */}
-      <h2 className="text-xl font-bold mb-4">Hiring Now</h2>
+      <h2 className="text-xl font-bold  mb-4">Hiring Now</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allJobs.length > 0 ? (
           allJobs.map((job) => <JobCard key={job.id} job={job} />)

@@ -109,7 +109,7 @@ export default function JobDetails() {
   if (!job) return <p className="text-center">Job not found.</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-10 dark:bg-gray-900 dark:text-white">
+    <div className="max-w-3xl mx-auto mt-12 mb-12 p-6 bg-white rounded shadow  dark:bg-gray-950 dark:text-white">
       <h1 className="text-3xl font-bold mb-4">{job.title}</h1>
       {job.company_name && <p className="text-lg mb-2">{job.company_name}</p>}
       <p className="mb-1"><strong>Type:</strong> {job.type}</p>
@@ -134,7 +134,7 @@ export default function JobDetails() {
       <p className="mb-4 whitespace-pre-line">{job.responsibilities}</p>
 
       {/* 🔲 Application Section */}
-      <div className="mt-8 p-4 rounded bg-gray-50 border dark:bg-gray-800">
+      <div className="mt-8 p-4 rounded bg-gray-50  dark:bg-gray-950">
         {loadingApp && <p>Loading your application status...</p>}
 
         {errorApp && <p className="text-red-500">Error: {errorApp}</p>}

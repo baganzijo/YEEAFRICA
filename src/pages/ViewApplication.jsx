@@ -163,7 +163,7 @@ export default function ViewApplications() {
   if (loading) return <p className="p-6">Loading...</p>;
 
   return (
-    <div className="mx-auto p-6 bg-white mt-10 w-full dark:bg-gray-950 shadow-lg rounded">
+    <div className="mx-auto p-6 w-full shadow-lg rounded mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Job Applications</h1>
 
       <div className="w-full p-4 shadow-md flex justify-center items-center mb-10 bg-white dark:bg-gray-950">

@@ -128,7 +128,7 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="px-4 py-6 max-w-7xl mt-12 mx-auto">
+    <div className="px-4 py-6 max-w-7xl mx-auto mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl md:text-3xl font-semibold mb-6">
         {getGreeting()}{student?.full_name ? `, ${student.full_name}` : ''}
       </h1>

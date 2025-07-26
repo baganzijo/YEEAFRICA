@@ -127,7 +127,7 @@ export default function ApplyNow() {
   };
 
   return (
-    <div className="w-full flex flex-col justify-between items-center mx-auto p-6 bg-white dark:bg-gray-950 mt-12 shadow rounded">
+    <div className="w-full flex flex-col justify-between items-center mx-auto p-6 bg-white dark:bg-gray-950 mt-12 mb-10 shadow rounded">
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
         Preview your details before submitting your application
       </h2>

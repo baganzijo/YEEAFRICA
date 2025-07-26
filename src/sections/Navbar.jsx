@@ -287,6 +287,19 @@ const navLinks = session ? authLinks : publicLinks;
                      <div className="flex justify-between px-4 py-2 dark:text-white hover:bg- dark:hover:bg-slate-800 mb-6"> Theme
                 <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
               </div>
+
+
+              {session && (
+                
+                                <Link  onClick={closeMenu} to="/notifications" className="px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 flex justify-between items-center">
+                                  Notifications
+                                  {unreadCount > 0 && (
+                                    <span className="bg-blue-700 text-white hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-bold px-2 py-0.5 rounded-full">
+                                      {unreadCount}
+                                    </span>
+                                  )}
+                                </Link>
+                              )}
                      
                     <button
                       onClick={() => {

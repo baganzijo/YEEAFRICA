@@ -69,7 +69,7 @@ export default function TutorProfile() {
   } = tutor;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 mt-10 bg-white dark:bg-gray-900 rounded-lg shadow">
+    <div className="max-w-4xl mx-auto p-6 mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white rounded-lg shadow">
       <div className="flex flex-col items-center mb-6">
         <img
           src={profile_picture || 'https://via.placeholder.com/150?text=No+Image'}

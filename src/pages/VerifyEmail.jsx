@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function VerifyEmail() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-white dark:bg-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
         Check your email 📩
       </h1>

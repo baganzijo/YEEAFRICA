@@ -32,7 +32,7 @@ export default function ViewJob() {
   if (!job) return <p className="text-center mt-10 text-red-500">Job not found</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 mt-10 rounded-lg shadow">
+    <div className="max-w-4xl mx-auto p-6 rounded-lg shadow mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <img

@@ -117,10 +117,9 @@ const authLinks =
     : role === 'student'
     ? [
         { name: 'Home', path: '/home' },
-       
-        { name: 'Internships', path: '/internships' },
-        { name: 'Jobs', path: '/jobs' },
-        { name: 'Favorites', path: '/saved-jobs' },
+         { name: 'Jobs', path: '/jobs' },
+        { name: 'Interns', path: '/internships' },
+        { name: 'Notification', path: '/notifications' },
       ]
     : [];
 
@@ -138,7 +137,7 @@ const navLinks = session ? authLinks : publicLinks;
                   
                     key={link.name}
                     to={link.path}
-                    className= {`block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-80 hover:text-blue-500 transition ${
+                    className= {`block px-4 py-2 rounded text-black dark:text-white hover:bg-slate-200 dark:hover:bg-slate-80 hover:text-blue-500 transition ${
                     location.pathname === link.path ? 'text-yellow-400' : ''
                   }`}
                     
@@ -148,7 +147,7 @@ const navLinks = session ? authLinks : publicLinks;
                 ))}
 
                 {session && ( 
-                  <Link  to="/notifications" className="px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800 flex justify-between items-center">
+                  <Link  to="/notifications" className="px-4 py-2 rounded text-black dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 flex justify-between items-center">
                     Notifications
                     {unreadCount > 0 && (
                       <span className="bg-blue-700 text-white hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-bold px-2 py-0.5 rounded-full">

@@ -62,7 +62,7 @@ const Internships = () => {
   }, [search, filters, jobs]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl font-bold mb-6">Available Internship Opportunities</h1>
 
       {/* Search + Filters */}

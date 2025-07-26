@@ -8,7 +8,24 @@ const mainTypes = ['Job', 'Internship'];
 const jobSubTypes = ['Full-time', 'Part-time', 'Remote', 'Contract'];
 const internshipSubTypes = ['Full-time', 'Part-time', 'Remote'];
 const industries = [
-  "Aerospace", "Agriculture", "Architecture & Design", "Automotive", "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy", "Cloud Computing", "Construction", "Consulting", "Consumer Goods", "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education", "Electronics", "Energy", "Environmental Services", "Event Planning", "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture", "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology", "Healthcare", "Hospitality", "Human Resources", "Import & Export", "Industrial Automation", "Information Technology", "Insurance", "Interior Design", "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics", "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment", "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit", "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations", "Publishing", "Real Estate", "Renewable Energy", "Research & Development", "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime", "Social Services", "Software Development", "Sports & Recreation", "Supply Chain", "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities", "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
+  "Aerospace", "Agriculture", "Architecture & Design", "Automotive",
+  "Aviation", "Banking", "Biotechnology", "Chemical", "Clean Energy",
+  "Cloud Computing", "Construction", "Consulting", "Consumer Goods",
+  "Cybersecurity", "Data Science", "Defense", "E-commerce", "Education",
+  "Electronics", "Energy", "Environmental Services", "Event Planning",
+  "Fashion", "Film & Television", "Finance", "Fishing & Aquaculture",
+  "Food & Beverage", "Forestry", "Gaming", "Government", "Green Technology",
+  "Healthcare", "Hospitality", "Human Resources", "Import & Export",
+  "Industrial Automation", "Information Technology", "Insurance", "Interior Design",
+  "International Trade", "Investment Banking", "Journalism", "Legal", "Logistics",
+  "Luxury Goods", "Manufacturing", "Marine & Fisheries", "Marketing", "Media & Entertainment",
+  "Medical Devices", "Mining & Metals", "Mobile Applications", "Nanotechnology", "Non-Profit",
+  "Nuclear Energy", "Oil & Gas", "Online Services", "Pharmaceuticals", "Public Relations",
+  "Publishing", "Real Estate", "Renewable Energy", "Research & Development",
+  "Retail", "Robotics", "Safety & Compliance", "Sales", "Security", "Shipping & Maritime",
+  "Social Services", "Software Development", "Sports & Recreation", "Supply Chain",
+  "Telecommunications", "Textile", "Tourism & Travel", "Transportation", "Utilities",
+  "Video Production", "Waste Management", "Water Management", "Web Development", "Wholesale"
 ];
 const qualifications = ['Primary', 'O-Level', 'A-Level', 'Certificate', 'Diploma', 'Bachelor', 'Masters', 'PhD', 'Professional'];
 
@@ -149,7 +166,7 @@ export default function JobForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
+    <div className="max-w-3xl mx-auto mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white p-6 rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
         {jobId ? 'Edit Job' : 'Post a Job'}
       </h2>

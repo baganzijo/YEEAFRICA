@@ -77,7 +77,7 @@ const Jobs = () => {
   }, [search, filters, jobs]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl font-bold mb-6">💼 Available Job Opportunities</h1>
 
       {/* Filter Section */}

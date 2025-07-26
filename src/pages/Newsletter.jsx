@@ -27,7 +27,7 @@ const FooterNewsletter = () => {
   };
 
   return (
-    <div>
+    <div  className="mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h4 className="text-lg font-semibold mb-3">Join our newsletter</h4>
       <p className="text-sm mb-3">Stay updated on internships, jobs, and more.</p>
       <form

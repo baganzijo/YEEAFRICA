@@ -124,7 +124,7 @@ export default function StudentForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto mt-10 p-6 bg-white dark:bg-gray-950 text-gray-600 dark:text-gray-300 rounded-lg shadow space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto mt-12 mb-12 p-6 bg-white dark:bg-gray-950 text-gray-600 dark:text-gray-300 rounded-lg shadow space-y-4">
       <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
         {existingData ? 'Edit Your Profile' : 'Register Your Profile'}
       </h2>

@@ -44,8 +44,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 shadow-md rounded-lg p-6">
+    <div className="min-h-screen flex items-center justify-center mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white px-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-950 shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white text-center">
           Create New Password
         </h2>

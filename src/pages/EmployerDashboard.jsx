@@ -101,7 +101,7 @@ export default function EmployerDashboard() {
   };
 
   return (
-    <div className="min-h-screen  bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen  bg-gray-100 dark:bg-gray-950 mt-12 mmb-12">
       <main className="max-w-7xl mx-auto p-4 mt-12 md:p-8">
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">
         {greeting}, {companyName || 'Friend'}

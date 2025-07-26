@@ -46,7 +46,7 @@ const StudentNotificationJobView = () => {
   if (errorMsg) return <div className="p-6 text-red-600">{errorMsg}</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-10 bg-white dark:bg-gray-950 rounded shadow">
+    <div className="max-w-3xl mx-auto p-6 mt-12 mb-12  bg-white dark:bg-gray-950 text-black dark:text-white">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{job.title}</h1>
 
       <div className="text-gray-600 dark:text-gray-300 space-y-2 mb-6">
