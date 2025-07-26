@@ -163,7 +163,7 @@ const InternshipList = () => {
           filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
           <p className="col-span-full text-center text-gray-600 dark:text-gray-400">
-            No internships found.
+            More internship offers coming soon. Please stay tuned.
           </p>
         )}
       </div>

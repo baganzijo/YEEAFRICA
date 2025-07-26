@@ -234,7 +234,7 @@ export default function Home() {
   const allJobs = filteredJobs;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mt-10 mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">
         👋 {greeting}, {student?.full_name || "Friend"}
       </h1>
@@ -313,25 +313,25 @@ export default function Home() {
       </Swiper>
 
       {/* Urgently Hiring */}
-      <h2 className="text-xl font-bold mb-4">Urgently Hiring Now</h2>
+      <h2 className="text-xl font-bold mb-4">Hiring Now</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allJobs.length > 0 ? (
           allJobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
           <p className="text-center text-gray-500 dark:text-gray-300 col-span-full">
-            No jobs match your search or filters.
+            Something went wrong. Please try again later
           </p>
         )}
       </div>
 
       {/* Internships Only */}
-      <h2 className="text-xl font-bold mt-12 mb-4">For Interns Only</h2>
+      <h2 className="text-xl font-bold mt-12 mb-4">For Interns </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {internshipsOnly.length > 0 ? (
           internshipsOnly.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
           <p className="text-center text-gray-500 dark:text-gray-300 col-span-full">
-            No internships match your search or filters.
+          Something went wrong.Please try again later
           </p>
         )}
       </div>

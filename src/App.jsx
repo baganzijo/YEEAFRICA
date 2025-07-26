@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import OneSignal from 'react-onesignal';
 import { supabase } from './supabaseClient';
 
@@ -46,10 +46,16 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Faq from './pages/Faq';
 import ScrollToTop from "./sections/ScrollToTop";
+import BottomNav from './sections/BottomNav';
 
 function App() {
   const [user, setUser] = useState(null);
   const [authType, setAuthType] = useState(null); // 'login', 'register', or null
+  const location = useLocation();
+  const showFooter = location.pathname === '/';
+  const hideBottomNav = location.pathname === '/' || location.pathname === '/SignIn';
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = () => setMenuOpon(false);
 
   useEffect(() => {
     const getSession = async () => {
@@ -88,7 +94,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar onOpenAuthModal={setAuthType} />
+      <Navbar onOpenAuthModal={setAuthType} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       <div className="flex-grow">
         <ScrollToTop />
@@ -136,6 +142,10 @@ function App() {
           
         </Routes>
       </div>
+    
+
+      {showFooter && <Footer />}
+      {!hideBottomNav && <BottomNav onNavigate={closeMenu} />}
 
       {/* ✅ Auth Modal (Login/Register popup) */}
       {authType === 'login' && (
@@ -156,7 +166,7 @@ function App() {
         </div>
       )}
 
-      <Footer />
+      
     </div>
   );
 }

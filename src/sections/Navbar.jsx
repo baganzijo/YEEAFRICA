@@ -9,9 +9,8 @@ import AuthModal from './AuthModal';
 import { UserAuth } from '../Context/AuthContext';
 import { supabase } from '../supabaseClient';
 
-const Navbar = () => {
+const Navbar = ({ menuOpen, setMenuOpen }) => {
   const [authType, setAuthType] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [role, setRole] = useState(null);
@@ -106,17 +105,16 @@ const Navbar = () => {
 const authLinks =
   role === 'employer'
     ? [
-        { name: 'Home', path: '/home' },
+       
         { name: 'Dashboard', path: '/employer-dashboard' },
-        { name: 'Post Job', path: '/post-job' },
+       
       ]
     : role === 'student'
     ? [
-        { name: 'Home', path: '/home' },
+      
         { name: 'Dashboard', path: '/student-dashboard' },
-        { name: 'Internships', path: '/internships' },
-        { name: 'Jobs', path: '/jobs' },
-        { name: 'Saved Jobs', path: '/saved-jobs' },
+       
+       
       ]
     : [];
 
@@ -187,9 +185,7 @@ const navLinks = session ? authLinks : publicLinks;
                     <Link to={profilePath} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                       My Profile
                     </Link>
-                    <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Settings
-                    </Link>
+                    
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 hover:bg-red-100 dark:hover:bg-red-700 text-red-500"
@@ -219,7 +215,7 @@ const navLinks = session ? authLinks : publicLinks;
 
           {/* Mobile menu icon */}
           <div className="lg:hidden flex items-center gap-4 text-black dark:text-white">
-            <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
+           
             <button onClick={() => setMenuOpen(true)}><FaBars /></button>
           </div>
         </div>
@@ -227,32 +223,23 @@ const navLinks = session ? authLinks : publicLinks;
         {/* Mobile sidebar menu */}
         {menuOpen && (
           <div ref={overlayRef} className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40">
-            <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-gray-950 p-6 z-50 flex flex-col">
-              <div className="flex justify-end text-white mb-6">
+            <div ref={menuRef} className="fixed right-0 top-0 w-3/5 h-full bg-white dark:bg-gray-950 p-6 z-50 flex flex-col">
+              <div className="flex justify-end  dark:text-white mb-6">
                 <button onClick={closeMenu}><FaTimes size={24} /></button>
               </div>
-              <nav className="flex flex-col gap-4 text-white">
+              <nav className="flex flex-col gap-4 dark:text-white">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     to={link.path}
                     onClick={closeMenu}
-                    className="block px-4 py-2 rounded hover:bg-gray-800"
+                    className="block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                   >
                     {link.name}
                   </Link>
                 ))}
 
-                {session && (
-                  <Link to="/notifications" onClick={closeMenu} className="px-4 py-2 rounded hover:bg-gray-800 flex justify-between items-center">
-                    Notifications
-                    {unreadCount > 0 && (
-                      <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </Link>
-                )}
+                
 
                 {!session ? (
                   <>
@@ -261,7 +248,7 @@ const navLinks = session ? authLinks : publicLinks;
                         closeMenu();
                         setAuthType("login");
                       }}
-                      className="w-full text-left px-4 py-2 rounded hover:bg-blue-700"
+                      className="w-full text-left px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                     >
                       Login
                     </button>
@@ -270,7 +257,7 @@ const navLinks = session ? authLinks : publicLinks;
                         closeMenu();
                         setAuthType("register");
                       }}
-                      className="w-full text-left px-4 py-2 rounded hover:bg-blue-700"
+                      className="w-full text-left px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                     >
                       Register
                     </button>
@@ -280,16 +267,20 @@ const navLinks = session ? authLinks : publicLinks;
                     <Link
                       to={profilePath}
                       onClick={closeMenu}
-                      className="block px-4 py-2 rounded hover:bg-blue-700"
+                      className="block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                     >
                       My Account
                     </Link>
+                     <div className="flex justify-between px-4 py-2 dark:text-white hover:bg- dark:hover:bg-slate-800 mb-6"> Theme
+                <button onClick={toggleTheme}>{darkMode ? <FaSun /> : <FaMoon />}</button>
+              </div>
+                     
                     <button
                       onClick={() => {
                         closeMenu();
                         handleLogout();
                       }}
-                      className="w-full text-left px-4 py-2 rounded hover:bg-red-700"
+                      className="w-full text-left px-4 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                     >
                       Logout
                     </button>
@@ -301,19 +292,7 @@ const navLinks = session ? authLinks : publicLinks;
         )}
       </header>
 
-      {/* Mobile search bar */}
-      {['/internships', '/jobs'].includes(location.pathname) && (
-        <div className="block lg:hidden px-4 py-4 bg-white dark:bg-gray-950 mt-16 w-full shadow">
-          <div className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full">
-            <FaSearch className="text-gray-500 dark:text-gray-300" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-transparent outline-none w-full px-2 text-sm text-gray-800 dark:text-white"
-            />
-          </div>
-        </div>
-      )}
+      
 
       {/* Auth modal */}
       {authType && (
