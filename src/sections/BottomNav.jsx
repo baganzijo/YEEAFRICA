@@ -100,10 +100,10 @@ const BottomNav = ({ onNavigate }) => {
 
 
   const publicLinks = [
-  { name: 'YEE Africa', path: '/' },
+ 
   { name: 'Jobs', path: '/jobs' },
   { name: 'Internships', path: '/internships' },
-  { name: 'About', path: '/about' },
+ 
   { name: 'FAQ', path: '/faq' },
 ];
 
