@@ -8,7 +8,7 @@ import {
   FaRegBookmark,
 } from "react-icons/fa";
 import defaultLogo from "../assets/job.svg";
-import ad1 from "../assets/logowhhite.png";
+import ad1 from "../assets/logowhite.png";
 import ad2 from "../assets/mtn1.jpg";
 import ad3 from "../assets/mtn2.jpg";
 import ad4 from "../assets/mtn3.jpg";
