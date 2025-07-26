@@ -67,7 +67,7 @@ const BottomNav = ({ onNavigate }) => {
 
   if (session?.user?.id) {
     fetchUnreadNotifications();
-    interval = setInterval(fetchUnreadNotifications, 1000); // auto-refresh every 30s
+    interval = setInterval(fetchUnreadNotifications, 1000); // auto-refresh every 1second
   }
 
   return () => clearInterval(interval);
