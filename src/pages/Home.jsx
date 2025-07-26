@@ -8,11 +8,11 @@ import {
   FaRegBookmark,
 } from "react-icons/fa";
 import defaultLogo from "../assets/job.svg";
-import ad1 from "../assets/internships.jpg";
-import ad2 from "../assets/jobs.jpg";
-import ad3 from "../assets/contact_img.png";
-import ad4 from "../assets/courses.jpg";
-import ad5 from "../assets/contact_img.png";
+import ad1 from "../assets/logowhhite.png";
+import ad2 from "../assets/mtn1.jpg";
+import ad3 from "../assets/mtn2.jpg";
+import ad4 from "../assets/mtn3.jpg";
+import ad5 from "../assets/mtn4.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
