@@ -138,8 +138,10 @@ const navLinks = session ? authLinks : publicLinks;
                   
                     key={link.name}
                     to={link.path}
+                    className= {`block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-80 hover:text-blue-500 transition ${
+                    location.pathname === link.path ? 'text-yellow-400' : ''
+                  }`}
                     
-                    className="block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                   >
                     {link.name}
                   </Link>

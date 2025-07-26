@@ -96,10 +96,12 @@ const Navbar = ({ menuOpen, setMenuOpen }) => {
 
   const publicLinks = [
   { name: 'YEE Africa', path: '/' },
+   { name: 'Jobs', path: '/jobs' },
+    { name: 'Internships', path: '/internships' },
   { name: 'About', path: '/about' },
   { name: 'FAQ', path: '/faq' },
-  { name: 'Internships', path: '/internships' },
-  { name: 'Jobs', path: '/jobs' },
+ 
+ 
 ];
 
 const authLinks =
@@ -215,6 +217,8 @@ const navLinks = session ? authLinks : publicLinks;
 
           {/* Mobile menu icon */}
           <div className="lg:hidden flex items-center gap-4 text-black dark:text-white">
+
+            
            
             <button onClick={() => setMenuOpen(true)}><FaBars /></button>
           </div>
@@ -228,12 +232,20 @@ const navLinks = session ? authLinks : publicLinks;
                 <button onClick={closeMenu}><FaTimes size={24} /></button>
               </div>
               <nav className="flex flex-col gap-4 dark:text-white">
+
+
+                
+
+
+
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
-                    to={link.path}
+                    to={link.path} 
                     onClick={closeMenu}
-                    className="block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
+                    className= {`block px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-80 hover:text-blue-500 transition ${
+                    location.pathname === link.path ? 'text-yellow-400' : ''
+                  }`}
                   >
                     {link.name}
                   </Link>
@@ -248,6 +260,7 @@ const navLinks = session ? authLinks : publicLinks;
                         closeMenu();
                         setAuthType("login");
                       }}
+                      
                       className="w-full text-left px-4 py-2 rounded hover:bg-slate-200 dark:hover:bg-slate-800"
                     >
                       Login
