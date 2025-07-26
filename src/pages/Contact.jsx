@@ -102,18 +102,18 @@ const Contact = () => {
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold">Email</h3>
-            <p className="text-gray-600 dark:text-gray-300">support@yeeafrica.com</p>
+            <p className="text-gray-600 dark:text-gray-300">baganzijo@gmail.com</p>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold">Phone</h3>
-            <p className="text-gray-600 dark:text-gray-300">+256 700 123 456</p>
+            <p className="text-gray-600 dark:text-gray-300">+256 749745496</p>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold">Address</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Plot 12, Innovation Hub Rd,<br />
+               Ntinda Kigoowa Rd,<br />
               Kampala, Uganda
             </p>
           </div>
